@@ -1,0 +1,17 @@
+@mixin vexer-blaxbox {
+
+	/*
+	* Vaadin provides an effective way of importing add-on themes but does not 
+	* provide any automatic name-spacing. You should prefix all your 
+	* rules with blaxbox to avoid any conflicts.
+	*/
+
+	.blaxbox-answer {
+		color: green;
+	}
+
+	.blaxbox-title {
+		font-size: 24px;
+		font-weight: stronger;
+	}
+}
