@@ -124,7 +124,7 @@ public class BlaxBoxEditor extends VilleContent implements
 		questionTextCapt.addStyleName(BlaxBoxThemeConsts.TITLE_STYLE);
 		numberOfOperations = new IntStepper();
 		numberOfOperations.setValue(oldData.getAmount());
-	
+		numberOfOperations.setMinValue(1);
 		
 		
 		editlayout.addComponent(questionTextCapt);
