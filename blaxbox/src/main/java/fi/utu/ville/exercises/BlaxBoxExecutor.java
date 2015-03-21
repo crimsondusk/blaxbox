@@ -312,7 +312,7 @@ public class BlaxBoxExecutor extends VerticalLayout implements
 		if(tf2.getValue().equals(function(z,Integer.parseInt(tf1.getValue()))+""))
 		{
 			h3.addComponent(correct1);
-			corr+=0.5;
+			corr+=1;
 		}
 		else
 		{
@@ -322,7 +322,7 @@ public class BlaxBoxExecutor extends VerticalLayout implements
 		if(tf6.getValue().equals(function(z,Integer.parseInt(tf5.getValue()))+""))
 		{
 			h4.addComponent(correct2);
-			corr+=0.5;
+			corr+=1;
 		}
 		else
 		{
@@ -332,13 +332,13 @@ public class BlaxBoxExecutor extends VerticalLayout implements
 		if(tf8.getValue().equals(function(z,Integer.parseInt(tf7.getValue()))+""))
 		{
 			h5.addComponent(correct3);
-			corr+=0.5;
+			corr+=1;
 		}
 		else
 		{
 			h5.addComponent(incorrect3);
 		}
-		execHelper.informOnlySubmit(corr, null,
+		execHelper.informOnlySubmit(corr/3, null,
 				submType, null);
 
 	}
