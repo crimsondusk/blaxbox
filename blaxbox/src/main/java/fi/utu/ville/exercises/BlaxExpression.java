@@ -66,7 +66,7 @@ public class BlaxExpression
 
 			do
 				op = allOperators[rng.nextInt (allOperators.length)];
-			while (Arrays.asList (profile.operators).contains (op.getName()) == false);
+			while (profile.operators.contains (op.getName()) == false);
 
 			operators.add (op);
 			numOperands += op.getNumOperands() - 1;
@@ -102,7 +102,7 @@ public class BlaxExpression
 			}
 			else
 			{
-				String strval = Integer.toString (rng.nextInt (20) + 1);
+				String strval = Integer.toString (rng.nextInt (10) + 1);
 				BlaxOperand operand = new BlaxOperand (strval);
 
 				// With some odds, this number becomes an input number
@@ -148,32 +148,5 @@ public class BlaxExpression
 		}
 
 		return values.pop();
-	}
-
-	public void printInputs()
-	{
-		for (BlaxOperand input : inputs)
-			System.out.println ("" + input.getInputNumber() + ". (" + input.getValue() + ")");
-	}
-
-	public static void main (String[] args)
-	{
-		Random rng = new Random (System.currentTimeMillis() + 50);
-		BlaxExpressionProfile profile = new BlaxExpressionProfile();
-		profile.operators = new String[]{"Addition"};
-		profile.numInputs = 2;
-		profile.minOperators = profile.maxOperators = 5;
-		BlaxExpression expr = new BlaxExpression (profile);
-
-		for (int i = 0; i < 3; ++i)
-		{
-			System.out.println ("Iteration " + i);
-			for (int inputId = 0; inputId < profile.numInputs; ++inputId)
-				expr.setInput (inputId, Integer.toString (rng.nextInt (20) + 1));
-
-			System.out.println ("Inputs:");
-			expr.printInputs();
-			System.out.println ("-> " + expr.evaluate());
-		}
 	}
 };

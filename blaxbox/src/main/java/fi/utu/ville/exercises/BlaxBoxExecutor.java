@@ -1,6 +1,8 @@
 package fi.utu.ville.exercises;
 
 import java.util.Random;
+import java.util.ArrayList;
+import java.lang.Math;
 
 import com.vaadin.server.ClassResource;
 import com.vaadin.server.ThemeResource;
@@ -62,9 +64,8 @@ public class BlaxBoxExecutor extends VerticalLayout implements
     private HorizontalSplitPanel p;
     private int x;
     private Random r = new Random();
-    private int z = r.nextInt(3);
     private int[] y = new int[3];
-    private String s;
+    private String resultListString;
     private TextField tf5;
     private TextField tf6;
     private TextField tf7;
@@ -85,24 +86,14 @@ public class BlaxBoxExecutor extends VerticalLayout implements
     private Image incorrect3;
     private HorizontalLayout h3;
     private HorizontalLayout h4;
+    private BlaxExpression problem;
     
-    public static int function(int type, int x)
-    {
-    	int y=0;
-    
-    	switch(type)
-    	{
-    	case 0: y = 3*x-1; break;
-    	case 1: y = (int) Math.pow(x, 2); break;
-    	case 2: y = x+4; break;
-    	case 3: y = (x-3)*3; break;
-    	default: break;
-    	}
-    	return y;
-    }
+    private TextField[] inputFields;
+	private TextField[] outputFields;
+	private HorizontalLayout[] answerLayouts;
+	private Image[] corrects;
+	private Image[] incorrects;
 
-    
-    
 	public BlaxBoxExecutor() {
 
 		
@@ -116,6 +107,27 @@ public class BlaxBoxExecutor extends VerticalLayout implements
 			throws ExerciseException {
 		answerField.setCaption(localizer.getUIText(BlaxBoxUiConstants.ANSWER));
 		doLayout(exerciseData, oldSubm != null ? oldSubm.getAnswer() : "");
+	}
+
+	private boolean checkUserAnswer (int i)
+	{
+		if (i < 0 || i >= 3)
+			return false;
+
+		problem.setInput (0, inputFields[i].getValue());
+		double correctAnswer = Double.parseDouble (problem.evaluate());
+		double answer = Double.parseDouble (outputFields[i].getValue());
+
+		if (Math.abs (answer - correctAnswer) < 0.01)
+		{
+			answerLayouts[i].removeComponent (incorrects[i]);
+			answerLayouts[i].addComponent (corrects[i]);
+			return true;
+		}
+
+		answerLayouts[i].removeComponent (corrects[i]);
+		answerLayouts[i].addComponent (incorrects[i]);
+		return false;
 	}
 
 	private void doLayout(BlaxBoxExerciseData exerciseData, String oldAnswer) {
@@ -151,7 +163,7 @@ public class BlaxBoxExecutor extends VerticalLayout implements
 		l6 = new Label(" -> ");
 		l7 = new Label(" -> ");
 		l5 = new Label(" -> ");
-		s = "";
+		resultListString = "";
 		image1 = new ThemeResource("correct.jpg");
 		image2 = new ThemeResource("incorrect.png");
 		correct1 = new Image(null,image1);
@@ -178,6 +190,19 @@ public class BlaxBoxExecutor extends VerticalLayout implements
 		incorrect3.setWidth(5,Unit.MM);
 		incorrect3.setWidth(5,Unit.MM);
 		
+		// Generate a problem
+		BlaxExpressionProfile profile = new BlaxExpressionProfile();
+		profile.numInputs = 1;
+		profile.minOperators = profile.maxOperators = exerciseData.getAmount();
+		profile.operators = new ArrayList<String>();
+
+		if (exerciseData.getAddAllowed()) profile.operators.add ("Addition");
+		if (exerciseData.getSubAllowed()) profile.operators.add ("Subtraction");
+		if (exerciseData.getMultiAllowed()) profile.operators.add ("Multiplication");
+		if (exerciseData.getDivAllowed()) profile.operators.add ("Division");
+
+		problem = new BlaxExpression (profile);
+
 		 h1 = new HorizontalLayout();
 	 h2 = new HorizontalLayout();
 		h3= new HorizontalLayout();
@@ -185,48 +210,26 @@ public class BlaxBoxExecutor extends VerticalLayout implements
 		h5= new HorizontalLayout();
 		b1.addClickListener(new Button.ClickListener()
 		{@Override 
-			public void buttonClick(ClickEvent event) {
-			x = Integer.parseInt(tf3.getValue());
-			
-			String s2 = function(z, x)+"";
-				tf4.setValue(s2);
-				s= s+x+" -> "+s2+"\n";
-				ta.setValue(s);
-			}
+			public void buttonClick(ClickEvent event)
+			{
+				String x = tf3.getValue();
+				problem.setInput (0, x);
 
-		
+				String resultString = problem.evaluate();
+				tf4.setValue (resultString);
+				resultListString += (x + " -> " + resultString + "\n");
+				ta.setValue (resultListString);
+			}
 		});
 			
 		b3.addClickListener(new Button.ClickListener()
 		{@Override 
-			public void buttonClick(ClickEvent event) {
-			if(tf2.getValue().equals(function(z,Integer.parseInt(tf1.getValue()))+""))
+			public void buttonClick(ClickEvent event)
 			{
-				h3.addComponent(correct1);
+				for (int i = 0; i < 3; ++i)
+					checkUserAnswer (i);
 			}
-			else
-			{
-				h3.addComponent(incorrect1);
-			}
-			
-			if(tf6.getValue().equals(function(z,Integer.parseInt(tf5.getValue()))+""))
-			{
-				h4.addComponent(correct2);
-			}
-			else
-			{
-				h4.addComponent(incorrect2);
-			}
-			
-			if(tf8.getValue().equals(function(z,Integer.parseInt(tf7.getValue()))+""))
-			{
-				h5.addComponent(correct3);
-			}
-			else
-			{
-				h5.addComponent(incorrect3);
-			}
-		}});
+		});
 		
 		
 		h2.addComponent(tf3);
@@ -269,6 +272,12 @@ public class BlaxBoxExecutor extends VerticalLayout implements
 		p.setFirstComponent(container1);
 		p.setSecondComponent(container2);
 		addComponent(p);
+
+		inputFields = new TextField[] {tf1, tf5, tf7};
+		outputFields = new TextField[] {tf2, tf6, tf8};
+		answerLayouts = new HorizontalLayout[] {h3, h4, h5};
+		corrects = new Image[] {correct1, correct2, correct3};
+		incorrects = new Image[] {incorrect1, incorrect2, incorrect3};
 	}
 		
 	@Override
@@ -298,40 +307,17 @@ public class BlaxBoxExecutor extends VerticalLayout implements
 	}
 
 	@Override
-	public void askSubmit(SubmissionType submType) {
-		double corr = 0;
+	public void askSubmit(SubmissionType submType)
+	{
+		double corr = 0.0;
 
-		if(tf2.getValue().equals(function(z,Integer.parseInt(tf1.getValue()))+""))
+		for (int i = 0; i < 3; ++i)
 		{
-			h3.addComponent(correct1);
-			corr+=0.5;
+			if (checkUserAnswer (i))
+				corr += 1.0;
 		}
-		else
-		{
-			h3.addComponent(incorrect1);
-		}
-		
-		if(tf6.getValue().equals(function(z,Integer.parseInt(tf5.getValue()))+""))
-		{
-			h4.addComponent(correct2);
-			corr+=0.5;
-		}
-		else
-		{
-			h4.addComponent(incorrect2);
-		}
-		
-		if(tf8.getValue().equals(function(z,Integer.parseInt(tf7.getValue()))+""))
-		{
-			h5.addComponent(correct3);
-			corr+=0.5;
-		}
-		else
-		{
-			h5.addComponent(incorrect3);
-		}
-		execHelper.informOnlySubmit(corr, null,
-				submType, null);
+
+		execHelper.informOnlySubmit (corr / 3, null, submType, null);
 
 	}
 
