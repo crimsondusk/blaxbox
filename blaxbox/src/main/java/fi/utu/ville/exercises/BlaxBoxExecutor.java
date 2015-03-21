@@ -85,6 +85,9 @@ public class BlaxBoxExecutor extends VerticalLayout implements
     private Image incorrect3;
     private HorizontalLayout h3;
     private HorizontalLayout h4;
+	private Image imageKone;
+	private Image imageRatas;
+
     
     public static int function(int type, int x)
     {
@@ -124,7 +127,7 @@ public class BlaxBoxExecutor extends VerticalLayout implements
 		tf1 = new TextField();
 		tf1.setValue(z1+"");
 		tf2 = new TextField();
-		ta = new TextArea("Results_list");
+		ta = new TextArea("Results list");
 		ta.setHeight(2, Unit.CM);
 		l1 = new Label(" -> ");
 		b1 = new Button("GO!");
@@ -177,6 +180,11 @@ public class BlaxBoxExecutor extends VerticalLayout implements
 		incorrect3 = new Image(null,image2);
 		incorrect3.setWidth(5,Unit.MM);
 		incorrect3.setWidth(5,Unit.MM);
+		
+		ThemeResource resourceKone = new ThemeResource("kone.png");
+		imageKone = new Image(null, resourceKone);		
+		ThemeResource resourceRatas = new ThemeResource("ratas.png");
+		imageRatas = new Image(null, resourceRatas);				
 		
 		 h1 = new HorizontalLayout();
 	 h2 = new HorizontalLayout();
@@ -241,14 +249,14 @@ public class BlaxBoxExecutor extends VerticalLayout implements
 		container1.setComponentAlignment(h1, Alignment.MIDDLE_CENTER);
 		container1.setComponentAlignment(b1, Alignment.MIDDLE_CENTER);
 		container1.setComponentAlignment(h2, Alignment.MIDDLE_CENTER);
-//		container1.setComponentAlignment(ta, Alignment.MIDDLE_CENTER);
+		container1.setComponentAlignment(ta, Alignment.MIDDLE_CENTER);
 		
 		//h2.addComponent(l2);
 		
-		Label insertPicture = new Label("*insert picture here*");
-		h2.addComponent(insertPicture);
+		//Label insertPicture = new Label("*insert picture here*");
+		h2.addComponent(imageKone);
 		h2.addComponent(tf4);
-		h2.setComponentAlignment(insertPicture, Alignment.MIDDLE_CENTER);
+		h2.setComponentAlignment(imageKone, Alignment.MIDDLE_CENTER);
 		h2.setComponentAlignment(tf4, Alignment.MIDDLE_CENTER);	
 
 		h3.addComponent(tf1);
