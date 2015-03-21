@@ -28,6 +28,7 @@ import fi.utu.ville.exercises.model.SubmissionListener;
 import fi.utu.ville.exercises.model.SubmissionType;
 import fi.utu.ville.standardutils.Localizer;
 import fi.utu.ville.standardutils.TempFilesManager;
+import fi.utu.ville.standardutils.ui.DecimalField;
 import fi.utu.ville.standardutils.ui.IntegerField;
 
 public class BlaxBoxExecutor extends VerticalLayout implements
@@ -45,7 +46,7 @@ public class BlaxBoxExecutor extends VerticalLayout implements
 	private final TextField answerField = new TextField();
 	
 	private IntegerField tf3;
-	private TextField tf4;
+	private Label tf4;
 	private Button b1;
     private TextField tf1;
     private TextField tf2;
@@ -87,6 +88,8 @@ public class BlaxBoxExecutor extends VerticalLayout implements
     private HorizontalLayout h3;
     private HorizontalLayout h4;
     private BlaxExpression problem;
+	private Image imageKone;
+	private Image imageRatas;
     
     private TextField[] inputFields;
 	private TextField[] outputFields;
@@ -136,8 +139,10 @@ public class BlaxBoxExecutor extends VerticalLayout implements
 		tf1 = new TextField();
 		tf1.setValue(z1+"");
 		tf2 = new TextField();
-		ta = new TextArea("Results_list");
-		ta.setHeight(2, Unit.CM);
+		ta = new TextArea("Results list");
+		ta.setHeight(null);
+		ta.setWidth("100px");
+		ta.addStyleName("resultsArea");
 		l1 = new Label(" -> ");
 		b1 = new Button("GO!");
 		//l2 = new Label("Get it ? Click the button to continue.");	
@@ -151,7 +156,7 @@ public class BlaxBoxExecutor extends VerticalLayout implements
 		tf3.setWidth("80px");
 		tf3.addStyleName("header1");
 		tf3.setMaxLength(2);
-		tf4 = new TextField();
+		tf4 = new Label();
 		tf4.setWidth("120px");
 		tf4.addStyleName("header1");
 		tf5 = new TextField();
@@ -203,6 +208,11 @@ public class BlaxBoxExecutor extends VerticalLayout implements
 
 		problem = new BlaxExpression (profile);
 
+		ThemeResource resourceKone = new ThemeResource("kone.png");
+		imageKone = new Image(null, resourceKone);		
+		ThemeResource resourceRatas = new ThemeResource("ratas.png");
+		imageRatas = new Image(null, resourceRatas);				
+		
 		 h1 = new HorizontalLayout();
 	 h2 = new HorizontalLayout();
 		h3= new HorizontalLayout();
@@ -233,7 +243,7 @@ public class BlaxBoxExecutor extends VerticalLayout implements
 		
 		
 		h2.addComponent(tf3);
-		h2.setComponentAlignment(tf3, Alignment.MIDDLE_CENTER);
+		h2.setComponentAlignment(tf3, Alignment.BOTTOM_CENTER);
 		//h1.addComponent(l5);
 		//h1.addComponent(tf4);
 		container1.addComponent(h1);
@@ -244,15 +254,15 @@ public class BlaxBoxExecutor extends VerticalLayout implements
 		container1.setComponentAlignment(h1, Alignment.MIDDLE_CENTER);
 		container1.setComponentAlignment(b1, Alignment.MIDDLE_CENTER);
 		container1.setComponentAlignment(h2, Alignment.MIDDLE_CENTER);
-//		container1.setComponentAlignment(ta, Alignment.MIDDLE_CENTER);
+		container1.setComponentAlignment(ta, Alignment.MIDDLE_CENTER);
 		
 		//h2.addComponent(l2);
 		
-		Label insertPicture = new Label("*insert picture here*");
-		h2.addComponent(insertPicture);
+		//Label insertPicture = new Label("*insert picture here*");
+		h2.addComponent(imageKone);
 		h2.addComponent(tf4);
-		h2.setComponentAlignment(insertPicture, Alignment.MIDDLE_CENTER);
-		h2.setComponentAlignment(tf4, Alignment.MIDDLE_CENTER);	
+		h2.setComponentAlignment(imageKone, Alignment.MIDDLE_CENTER);
+		h2.setComponentAlignment(tf4, Alignment.BOTTOM_CENTER);	
 
 		h3.addComponent(tf1);
 		h3.addComponent(l1);
@@ -278,6 +288,11 @@ public class BlaxBoxExecutor extends VerticalLayout implements
 		answerLayouts = new HorizontalLayout[] {h3, h4, h5};
 		corrects = new Image[] {correct1, correct2, correct3};
 		incorrects = new Image[] {incorrect1, incorrect2, incorrect3};
+
+		container1.setMargin(true);
+		container1.setSpacing(true);
+		container2.setMargin(true);
+		container2.setSpacing(true);
 	}
 		
 	@Override
@@ -318,7 +333,6 @@ public class BlaxBoxExecutor extends VerticalLayout implements
 		}
 
 		execHelper.informOnlySubmit (corr / 3, null, submType, null);
-
 	}
 
 	@Override
