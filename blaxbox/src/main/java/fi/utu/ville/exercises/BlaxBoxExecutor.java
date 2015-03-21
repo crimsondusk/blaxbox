@@ -99,7 +99,7 @@ public class BlaxBoxExecutor extends VerticalLayout implements
 		tf3.addStyleName("header1");
 		tf3.setMaxLength(2);
 		tf4 = new TextField();
-		tf4.setWidth("80px");
+		tf4.setWidth("120px");
 		tf4.addStyleName("header1");
 		l5 = new Label("->");
 		s = "";
@@ -125,14 +125,19 @@ public class BlaxBoxExecutor extends VerticalLayout implements
 		HorizontalLayout h3 = new HorizontalLayout();
 		HorizontalLayout h4 = new HorizontalLayout();
 		
-		h1.addComponent(tf3);
-		h1.setComponentAlignment(tf3, Alignment.MIDDLE_CENTER);
+		h2.addComponent(tf3);
+		h2.setComponentAlignment(tf3, Alignment.MIDDLE_CENTER);
 		//h1.addComponent(l5);
 		//h1.addComponent(tf4);
 		container1.addComponent(h1);
 		container1.addComponent(b1);
 		container1.addComponent(h2);
 		container1.addComponent(ta);
+		
+		container1.setComponentAlignment(h1, Alignment.MIDDLE_CENTER);
+		container1.setComponentAlignment(b1, Alignment.MIDDLE_CENTER);
+//		container1.setComponentAlignment(h2, Alignment.MIDDLE_CENTER);
+//		container1.setComponentAlignment(ta, Alignment.MIDDLE_CENTER);
 		
 		//h2.addComponent(l2);
 		Label insertPicture = new Label("*insert picture here*");
@@ -151,6 +156,7 @@ public class BlaxBoxExecutor extends VerticalLayout implements
 		p.setFirstComponent(container1);
 		p.setSecondComponent(container2);
 		addComponent(p);
+		
 	}
 		
 	@Override
