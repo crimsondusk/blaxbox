@@ -1,50 +1,35 @@
-package fi.utu.ville.exercises;
-
 import java.util.Stack;
+import java.lang.NumberFormatException;
 
-public class BlaxNumericOperator extends BlaxBaseNumericOperator
+abstract public class BlaxNumericOperator implements BlaxOperator
 {
-	enum OperatorType
-	{
-		Addition,
-		Subtraction,
-		Multiplication,
-		Division,
-		Modulo
-	};
-
-	private OperatorType m_optype;
-	static private String[] OpSymbols = {"+", "-", "*", "/", "mod"};
-	static private String[] OpNames = {"Addition", "Subtraction", "Multiplication", "Division", "Modulo"};
-
 	@Override
-	public String toString()
+	public int getNumOperands()
 	{
-		return OpSymbols[m_optype.ordinal()];
+		return 2;
 	}
 
 	@Override
-	public String name()
+	public boolean doOperation (Stack<String> values)
 	{
-		return OpNames[m_optype.ordinal()];
-	}
+		float a, b;
 
-	BlaxNumericOperator (OperatorType op)
-	{
-		m_optype = op;
-	}
-
-	@Override
-	public float doNumericOperation (float a, float b)
-	{
-		switch (m_optype)
+		try
 		{
-		default:
-		case Addition: return a + b;
-		case Subtraction: return a - b;
-		case Multiplication: return a * b;
-		case Division: return a / b;
-		case Modulo: return a % b;
+			a = Float.parseFloat (values.pop());
+			b = Float.parseFloat (values.pop());
+
+			float res = getNumericResult (a, b);
+			int dumb = (int) res;
+			values.push (Float.toString (res));
 		}
+		catch (NumberFormatException e)
+		{
+			return false;
+		}
+
+		return true;
 	}
+
+	abstract float getNumericResult (float a, float b);
 };

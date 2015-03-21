@@ -123,8 +123,10 @@ public class BlaxBoxExecutor extends VerticalLayout implements
 		tf1.setValue(z1+"");
 		tf2 = new TextField();
 		ta = new TextArea("Results_list");
+		
 		ta.setHeight(2, Unit.CM);
 		l1 = new Label(" -> ");
+		l1.setWidth(5,Unit.MM);
 		b1 = new Button("GO!");
 		l2 = new Label("Get it ? Click the button to continue.");	
 		container1 = new VerticalLayout();
@@ -133,6 +135,7 @@ public class BlaxBoxExecutor extends VerticalLayout implements
 		l3 = new Label();
 		l4 = new Label();
 		l5 = new Label(" -> ");
+		l5.setWidth(5,Unit.MM);
 		tf3 = new TextField();
 		tf4 = new TextField();
 		tf5 = new TextField();
@@ -142,8 +145,11 @@ public class BlaxBoxExecutor extends VerticalLayout implements
 		tf7.setValue(z3+"");
 		tf8 = new TextField();
 		l6 = new Label(" -> ");
+		l6.setWidth(5,Unit.MM);
 		l7 = new Label(" -> ");
-		l5 = new Label(" -> ");
+		l7.setWidth(5,Unit.MM);
+
+		
 		s = "";
 		image1 = new ThemeResource("correct.jpg");
 		image2 = new ThemeResource("incorrect.png");
@@ -280,10 +286,38 @@ public class BlaxBoxExecutor extends VerticalLayout implements
 
 	@Override
 	public void askSubmit(SubmissionType submType) {
-		double corr = 1.0;
+		double corr = 0;
 
-		String answer = answerField.getValue();
-		execHelper.informOnlySubmit(corr, new BlaxBoxSubmissionInfo(answer),
+		if(tf2.getValue().equals(function(z,Integer.parseInt(tf1.getValue()))+""))
+		{
+			h3.addComponent(correct1);
+			corr+=0.5;
+		}
+		else
+		{
+			h3.addComponent(incorrect1);
+		}
+		
+		if(tf6.getValue().equals(function(z,Integer.parseInt(tf5.getValue()))+""))
+		{
+			h4.addComponent(correct2);
+			corr+=0.5;
+		}
+		else
+		{
+			h4.addComponent(incorrect2);
+		}
+		
+		if(tf8.getValue().equals(function(z,Integer.parseInt(tf7.getValue()))+""))
+		{
+			h5.addComponent(correct3);
+			corr+=0.5;
+		}
+		else
+		{
+			h5.addComponent(incorrect3);
+		}
+		execHelper.informOnlySubmit(corr, null,
 				submType, null);
 
 	}

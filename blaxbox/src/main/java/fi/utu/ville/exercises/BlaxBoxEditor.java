@@ -125,6 +125,7 @@ public class BlaxBoxEditor extends VilleContent implements
 		numberOfOperations = new IntStepper();
 		numberOfOperations.setValue(oldData.getAmount());
 		numberOfOperations.setMinValue(1);
+		numberOfOperations.setWidth("40px");
 		
 		
 		editlayout.addComponent(questionTextCapt);
