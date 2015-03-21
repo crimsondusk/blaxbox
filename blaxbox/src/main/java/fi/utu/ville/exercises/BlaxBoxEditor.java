@@ -2,6 +2,7 @@ package fi.utu.ville.exercises;
 
 import java.io.File;
 
+import com.vaadin.ui.CheckBox;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.Layout;
@@ -35,13 +36,21 @@ public class BlaxBoxEditor extends VilleContent implements
 	
 	private EditorHelper<BlaxBoxExerciseData> editorHelper;
 
-	private TextField questionText;
-
-	private AbstractFile currImgFile;
+	private TextField numberOfOperations;
 
 	private Localizer localizer;
 	
 	private AbstractEditorLayout layout;
+	
+	private CheckBox checkboxadd = new CheckBox("adding");
+	
+	private CheckBox checkboxsubtract = new CheckBox("subtracting");
+	
+	private CheckBox checkboxmultiplicate = new CheckBox("multiplication");
+	
+	private CheckBox checkboxdivision = new CheckBox("division");
+	
+	
 
 
 	public BlaxBoxEditor() {
@@ -67,7 +76,7 @@ public class BlaxBoxEditor extends VilleContent implements
 	}
 
 	private BlaxBoxExerciseData getCurrentExercise() {
-		return new BlaxBoxExerciseData(questionText.getValue(), currImgFile);
+		return new BlaxBoxExerciseData(numberOfOperations.getValue(), checkboxadd.getValue(), checkboxsubtract.getValue(), checkboxmultiplicate.getValue(), checkboxdivision.getValue());
 	}
 
 	@Override
@@ -95,10 +104,8 @@ public class BlaxBoxEditor extends VilleContent implements
 		String oldQuestion;
 		if (oldData != null) {
 			oldQuestion = oldData.getQuestion();
-			currImgFile = oldData.getImgFile();
 		} else {
 			oldQuestion = "";
-			currImgFile = null;
 		}
 
 
@@ -118,41 +125,19 @@ public class BlaxBoxEditor extends VilleContent implements
 		VerticalLayout editlayout = new VerticalLayout();
 
 		Label questionTextCapt = new Label(
-				localizer.getUIText(BlaxBoxUiConstants.QUESTION));
+				localizer.getUIText("How many operations?"/*BlaxBoxUiConstants.QUESTION*/));
 		questionTextCapt.addStyleName(BlaxBoxThemeConsts.TITLE_STYLE);
-		questionText = new TextField(null, oldQuestion);
+		numberOfOperations = new TextField(null, oldQuestion);
 
-		SimpleFileUploader uploader = new SimpleFileUploader(localizer,
-				editorHelper.getTempManager(), MAX_FILE_SIZE_KB,
-				MIME_FILTER);
-
-		uploader.registerUploaderListener(new UploaderListener() {
-
-			/**
-			 * 
-			 */
-			private static final long serialVersionUID = 8266397773350713952L;
-
-			@Override
-			public void fileUploadSucceeded(File tempFile, String fileName,
-					String mimeType) {
-				currImgFile = new AFFile(tempFile);
-			}
-
-			@Override
-			public void uploadedFileDeleted(File tempFile) {
-				currImgFile = null;
-			}
-
-		});
-
-		if (currImgFile != null) {
-			uploader.setAbstractUploadedFile(currImgFile);
-		}
+	
+		
+		
 		editlayout.addComponent(questionTextCapt);
-		editlayout.addComponent(questionText);
-		editlayout.addComponent(uploader);
-
+		editlayout.addComponent(numberOfOperations);
+		editlayout.addComponent(checkboxadd);
+		editlayout.addComponent(checkboxsubtract);
+		editlayout.addComponent(checkboxmultiplicate);
+		editlayout.addComponent(checkboxdivision);
 		layout.addToRight(editlayout);
 
 	}
