@@ -128,7 +128,9 @@ public class BlaxBoxExecutor extends VerticalLayout implements
 		tf1.setValue(z1+"");
 		tf2 = new TextField();
 		ta = new TextArea("Results list");
-		ta.setHeight(2, Unit.CM);
+		ta.setHeight(null);
+		ta.setWidth("100px");
+		ta.addStyleName("resultsArea");
 		l1 = new Label(" -> ");
 		b1 = new Button("GO!");
 		//l2 = new Label("Get it ? Click the button to continue.");	
@@ -277,6 +279,10 @@ public class BlaxBoxExecutor extends VerticalLayout implements
 		p.setFirstComponent(container1);
 		p.setSecondComponent(container2);
 		addComponent(p);
+		container1.setMargin(true);
+		container1.setSpacing(true);
+		container2.setMargin(true);
+		container2.setSpacing(true);
 	}
 		
 	@Override
