@@ -1,5 +1,7 @@
 package fi.utu.ville.exercises;
 
+import java.util.Random;
+
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.HorizontalLayout;
@@ -35,20 +37,24 @@ public class BlaxBoxExecutor extends VerticalLayout implements
 
 	private final TextField answerField = new TextField();
 	
-	private Label l3;
-	private Label l4;
+	private TextField tf3;
+	private TextField tf4;
 	private Button b1;
     private TextField tf1;
     private TextField tf2;
     private Label l1;
     private Label l2;
-    private Button b2;
     private Button b3;
     private Button b4;
+    private Label l3;
+    private Label l4;
     private Label l5;
     private VerticalLayout container1;
     private VerticalLayout container2;
     private HorizontalSplitPanel p;
+    private int x;
+    private Random r;
+    private int[] y;
 	public BlaxBoxExecutor() {
 
 		
@@ -78,7 +84,6 @@ public class BlaxBoxExecutor extends VerticalLayout implements
 		l1 = new Label(" -> ");
 		b1 = new Button("GO!");
 		l2 = new Label("Get it ? Click the button to continue.");	
-		b2 = new Button("Next");
 		container1 = new VerticalLayout();
 		container2 = new VerticalLayout();
 		b3 = new Button("OK");
@@ -86,11 +91,19 @@ public class BlaxBoxExecutor extends VerticalLayout implements
 		l3 = new Label();
 		l4 = new Label();
 		l5 = new Label(" -> ");
+		tf3 = new TextField();
+		tf4 = new TextField();
+		l5 = new Label("->");
+		
 		
 		b1.addClickListener(new Button.ClickListener()
 		{@Override 
 			public void buttonClick(ClickEvent event) {
-				Notification.show("Thank you!");
+			x = Integer.parseInt(tf3.getValue());
+			y[0]=(x+3);
+			y[1] = 3*x-1;
+			y[2] = (int)Math.pow(x, 2);
+				tf4.setValue(y[0]+"");
 			}
 
 		
@@ -102,31 +115,24 @@ public class BlaxBoxExecutor extends VerticalLayout implements
 		HorizontalLayout h3 = new HorizontalLayout();
 		HorizontalLayout h4 = new HorizontalLayout();
 		
-		h1.addComponent(l3);
+		h1.addComponent(tf3);
 		h1.addComponent(l5);
-		h1.addComponent(l4);
+		h1.addComponent(tf4);
 		container1.addComponent(h1);
 		container1.addComponent(b1);
 		container1.addComponent(h2);
 		h2.addComponent(l2);
-		h2.addComponent(b2);
 		
 		h3.addComponent(tf1);
 		h3.addComponent(l1);
 		h3.addComponent(tf2);
 		h4.addComponent(b3);
-		h4.addComponent(b4);
 		container2.addComponent(h3);
 		container2.addComponent(h4);
 
 		p.setFirstComponent(container1);
 		p.setSecondComponent(container2);
 		addComponent(p);
-		//this.addComponent(container1);
-		//this.addComponent(container2);
-		
-
-		
 	}
 		
 	@Override
