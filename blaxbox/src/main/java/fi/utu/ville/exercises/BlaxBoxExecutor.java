@@ -45,6 +45,9 @@ public class BlaxBoxExecutor extends VerticalLayout implements
     private Label l1;
     private Label l2;
     private Button b3;
+    private Button b4;
+    private Label l3;
+    private Label l4;
     private Label l5;
     private VerticalLayout container1;
     private VerticalLayout container2;
@@ -69,15 +72,26 @@ public class BlaxBoxExecutor extends VerticalLayout implements
 	}
 
 	private void doLayout(BlaxBoxExerciseData exerciseData, String oldAnswer) {
+		this.addComponent(new Label(exerciseData.getAmount() + ""));
+		answerField.setValue(oldAnswer);
+		this.addComponent(answerField);
+		this.addComponent(new Label("adding allowed: " + Boolean.toString(exerciseData.getAddAllowed())));
+		this.addComponent(new Label("subtracting allowed: " + Boolean.toString(exerciseData.getSubAllowed())));
+		this.addComponent(new Label("multiplicating allowed: " + Boolean.toString(exerciseData.getMultiAllowed())));
+		this.addComponent(new Label("division allowed: " + Boolean.toString(exerciseData.getDivAllowed())));
 		p = new HorizontalSplitPanel();
 		tf1 = new TextField();
 		tf2 = new TextField();
-		l1 = new Label("->");
+		l1 = new Label(" -> ");
 		b1 = new Button("GO!");
 		l2 = new Label("Get it ? Click the button to continue.");	
 		container1 = new VerticalLayout();
 		container2 = new VerticalLayout();
 		b3 = new Button("OK");
+		b4 = new Button("Previous");
+		l3 = new Label();
+		l4 = new Label();
+		l5 = new Label(" -> ");
 		tf3 = new TextField();
 		tf4 = new TextField();
 		l5 = new Label("->");
@@ -96,7 +110,7 @@ public class BlaxBoxExecutor extends VerticalLayout implements
 		
 		});
 			
-		this.addComponent(new Label(exerciseData.getQuestion()));
+		this.addComponent(new Label(exerciseData.getAmount() + ""));
 		HorizontalLayout h1 = new HorizontalLayout();
 		HorizontalLayout h2 = new HorizontalLayout();
 		HorizontalLayout h3 = new HorizontalLayout();

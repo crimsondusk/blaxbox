@@ -2,6 +2,8 @@ package fi.utu.ville.exercises;
 
 import java.io.File;
 
+import org.vaadin.risto.stepper.IntStepper;
+
 import com.vaadin.ui.CheckBox;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
@@ -29,14 +31,10 @@ public class BlaxBoxEditor extends VilleContent implements
 	 * 
 	 */
 	private static final long serialVersionUID = -4600841604409240872L;
-
-	private static final int MAX_FILE_SIZE_KB = 1024;
-	
-	private static final String MIME_FILTER = "^image/.*$";
 	
 	private EditorHelper<BlaxBoxExerciseData> editorHelper;
 
-	private TextField numberOfOperations;
+	private IntStepper numberOfOperations;
 
 	private Localizer localizer;
 	
@@ -71,8 +69,13 @@ public class BlaxBoxEditor extends VilleContent implements
 		this.editorHelper = editorHelper;
 
 		editorHelper.getTempManager().initialize();
-
-		doLayout(oldData);
+		if (oldData != null) {
+			doLayout(oldData);
+		}
+		else {
+			oldData = new BlaxBoxExerciseData(1, true, false, false, false);
+			doLayout(oldData);
+		}
 	}
 
 	private BlaxBoxExerciseData getCurrentExercise() {
@@ -100,14 +103,6 @@ public class BlaxBoxEditor extends VilleContent implements
 		addComponent(layout);
 		
 		layout.setTitle("Editor");
-		
-		String oldQuestion;
-		if (oldData != null) {
-			oldQuestion = oldData.getQuestion();
-		} else {
-			oldQuestion = "";
-		}
-
 
 		layout.addToLeft(editorHelper.getInfoEditorView());
 
@@ -127,9 +122,9 @@ public class BlaxBoxEditor extends VilleContent implements
 		Label questionTextCapt = new Label(
 				localizer.getUIText("How many operations?"/*BlaxBoxUiConstants.QUESTION*/));
 		questionTextCapt.addStyleName(BlaxBoxThemeConsts.TITLE_STYLE);
-		numberOfOperations = new TextField(null, oldQuestion);
-
-	
+		numberOfOperations = new IntStepper();
+		numberOfOperations.setValue(oldData.getAmount());
+		numberOfOperations.setMinValue(1);
 		
 		
 		editlayout.addComponent(questionTextCapt);
