@@ -39,7 +39,7 @@ public class BlaxNumericOperator extends BlaxBaseNumericOperator
 		{
 		default:
 		case Addition: return a + b;
-		case Subtraction: return a + b;
+		case Subtraction: return a - b;
 		case Multiplication: return a * b;
 		case Division: return a / b;
 		case Modulo: return a % b;
