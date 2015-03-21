@@ -35,7 +35,6 @@ public class BlaxBoxExecutor extends VerticalLayout implements
 
 	new ExerciseExecutionHelper<BlaxBoxSubmissionInfo>();
 
-	private final TextField answerField = new TextField();
 	
 	private TextField tf3;
 	private TextField tf4;
@@ -67,14 +66,11 @@ public class BlaxBoxExecutor extends VerticalLayout implements
 			BlaxBoxExerciseData exerciseData, BlaxBoxSubmissionInfo oldSubm,
 			TempFilesManager materials, ExecutionSettings fbSettings)
 			throws ExerciseException {
-		answerField.setCaption(localizer.getUIText(BlaxBoxUiConstants.ANSWER));
-		doLayout(exerciseData, oldSubm != null ? oldSubm.getAnswer() : "");
+		
 	}
 
 	private void doLayout(BlaxBoxExerciseData exerciseData, String oldAnswer) {
 		this.addComponent(new Label(exerciseData.getAmount() + ""));
-		answerField.setValue(oldAnswer);
-		this.addComponent(answerField);
 		this.addComponent(new Label("adding allowed: " + Boolean.toString(exerciseData.getAddAllowed())));
 		this.addComponent(new Label("subtracting allowed: " + Boolean.toString(exerciseData.getSubAllowed())));
 		this.addComponent(new Label("multiplicating allowed: " + Boolean.toString(exerciseData.getMultiAllowed())));
@@ -166,9 +162,7 @@ public class BlaxBoxExecutor extends VerticalLayout implements
 	public void askSubmit(SubmissionType submType) {
 		double corr = 1.0;
 
-		String answer = answerField.getValue();
-		execHelper.informOnlySubmit(corr, new BlaxBoxSubmissionInfo(answer),
-				submType, null);
+		
 
 	}
 
