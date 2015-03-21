@@ -238,7 +238,7 @@ public class BlaxBoxExecutor extends VerticalLayout implements
 		
 		
 		h2.addComponent(tf3);
-		h2.setComponentAlignment(tf3, Alignment.MIDDLE_CENTER);
+		h2.setComponentAlignment(tf3, Alignment.BOTTOM_CENTER);
 		//h1.addComponent(l5);
 		//h1.addComponent(tf4);
 		container1.addComponent(h1);
@@ -257,7 +257,7 @@ public class BlaxBoxExecutor extends VerticalLayout implements
 		h2.addComponent(imageKone);
 		h2.addComponent(tf4);
 		h2.setComponentAlignment(imageKone, Alignment.MIDDLE_CENTER);
-		h2.setComponentAlignment(tf4, Alignment.MIDDLE_CENTER);	
+		h2.setComponentAlignment(tf4, Alignment.BOTTOM_CENTER);	
 
 		h3.addComponent(tf1);
 		h3.addComponent(l1);
