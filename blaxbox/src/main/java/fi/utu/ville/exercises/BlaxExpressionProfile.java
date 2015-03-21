@@ -1,3 +1,5 @@
+package fi.utu.ville.exercises;
+
 /*
  * Describes what kind of expressions to generate
  */

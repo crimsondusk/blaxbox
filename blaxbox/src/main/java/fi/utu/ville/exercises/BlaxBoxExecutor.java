@@ -35,7 +35,6 @@ public class BlaxBoxExecutor extends VerticalLayout implements
 
 	new ExerciseExecutionHelper<BlaxBoxSubmissionInfo>();
 
-	private final TextField answerField = new TextField();
 	
 	private TextField tf3;
 	private TextField tf4;
@@ -45,13 +44,17 @@ public class BlaxBoxExecutor extends VerticalLayout implements
     private Label l1;
     private Label l2;
     private Button b3;
+    private Button b4;
+    private Label l3;
+    private Label l4;
     private Label l5;
     private VerticalLayout container1;
     private VerticalLayout container2;
     private HorizontalSplitPanel p;
     private int x;
-    private Random r;
-    private int[] y;
+    private Random r = new Random();
+    private int z = r.nextInt(3);
+    private int[] y = new int[3];
 	public BlaxBoxExecutor() {
 
 		
@@ -63,20 +66,28 @@ public class BlaxBoxExecutor extends VerticalLayout implements
 			BlaxBoxExerciseData exerciseData, BlaxBoxSubmissionInfo oldSubm,
 			TempFilesManager materials, ExecutionSettings fbSettings)
 			throws ExerciseException {
-		answerField.setCaption(localizer.getUIText(BlaxBoxUiConstants.ANSWER));
-		doLayout(exerciseData, oldSubm != null ? oldSubm.getAnswer() : "");
+		
 	}
 
 	private void doLayout(BlaxBoxExerciseData exerciseData, String oldAnswer) {
+		this.addComponent(new Label(exerciseData.getAmount() + ""));
+		this.addComponent(new Label("adding allowed: " + Boolean.toString(exerciseData.getAddAllowed())));
+		this.addComponent(new Label("subtracting allowed: " + Boolean.toString(exerciseData.getSubAllowed())));
+		this.addComponent(new Label("multiplicating allowed: " + Boolean.toString(exerciseData.getMultiAllowed())));
+		this.addComponent(new Label("division allowed: " + Boolean.toString(exerciseData.getDivAllowed())));
 		p = new HorizontalSplitPanel();
 		tf1 = new TextField();
 		tf2 = new TextField();
-		l1 = new Label("->");
+		l1 = new Label(" -> ");
 		b1 = new Button("GO!");
 		l2 = new Label("Get it ? Click the button to continue.");	
 		container1 = new VerticalLayout();
 		container2 = new VerticalLayout();
 		b3 = new Button("OK");
+		b4 = new Button("Previous");
+		l3 = new Label();
+		l4 = new Label();
+		l5 = new Label(" -> ");
 		tf3 = new TextField();
 		tf4 = new TextField();
 		l5 = new Label("->");
@@ -89,13 +100,13 @@ public class BlaxBoxExecutor extends VerticalLayout implements
 			y[0]=(x+3);
 			y[1] = 3*x-1;
 			y[2] = (int)Math.pow(x, 2);
-				tf4.setValue(y[0]+"");
+				tf4.setValue(y[z]+"");
 			}
 
 		
 		});
 			
-		this.addComponent(new Label(exerciseData.getQuestion()));
+		this.addComponent(new Label(exerciseData.getAmount() + ""));
 		HorizontalLayout h1 = new HorizontalLayout();
 		HorizontalLayout h2 = new HorizontalLayout();
 		HorizontalLayout h3 = new HorizontalLayout();
@@ -151,9 +162,7 @@ public class BlaxBoxExecutor extends VerticalLayout implements
 	public void askSubmit(SubmissionType submType) {
 		double corr = 1.0;
 
-		String answer = answerField.getValue();
-		execHelper.informOnlySubmit(corr, new BlaxBoxSubmissionInfo(answer),
-				submType, null);
+		
 
 	}
 
