@@ -1,3 +1,5 @@
+package fi.utu.ville.exercises;
+
 public class BlaxMultiplicationOperator extends BlaxNumericOperator
 {
 	@Override public String getSymbol() { return "*"; }
