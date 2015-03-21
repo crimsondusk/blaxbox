@@ -1,3 +1,12 @@
+@-moz-keyframes spin { 100% { -moz-transform: rotate(360deg); } }
+@-webkit-keyframes spin { 100% { -webkit-transform: rotate(360deg); } }
+@keyframes spin { 100% { -webkit-transform: rotate(360deg); transform:rotate(360deg); transform-origin: 50% 50%; -webkit-transform-origin: 50% 50%;} }
+
+@keyframes example {
+from { opacity: 0; }
+to { opacity 1; }
+}
+
 @mixin vexer-blaxbox {
 
 	/*
@@ -14,4 +23,27 @@
 		font-size: 24px;
 		font-weight: stronger;
 	}
+
+	.header1 {
+		font-size: 48px !important;
+		font-weight: bold;
+	}
+
+	
+img {
+
+}
+
+.pyorii { 
+animation-name: spin;
+animation-duration: 4s;
+animation-iteration-count: infinite;
+position: absolute;
+left:100px;
+top:100px;
+}
+	
+	
+	
+
 }
