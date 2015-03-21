@@ -2,6 +2,7 @@ package fi.utu.ville.exercises;
 
 import java.util.Random;
 
+import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.HorizontalLayout;
@@ -23,6 +24,7 @@ import fi.utu.ville.exercises.model.SubmissionListener;
 import fi.utu.ville.exercises.model.SubmissionType;
 import fi.utu.ville.standardutils.Localizer;
 import fi.utu.ville.standardutils.TempFilesManager;
+import fi.utu.ville.standardutils.ui.IntegerField;
 
 public class BlaxBoxExecutor extends VerticalLayout implements
 		Executor<BlaxBoxExerciseData, BlaxBoxSubmissionInfo> {
@@ -38,7 +40,7 @@ public class BlaxBoxExecutor extends VerticalLayout implements
 
 	private final TextField answerField = new TextField();
 	
-	private TextField tf3;
+	private IntegerField tf3;
 	private TextField tf4;
 	private Button b1;
     private TextField tf1;
@@ -84,17 +86,21 @@ public class BlaxBoxExecutor extends VerticalLayout implements
 		ta.setHeight(2, Unit.CM);
 		l1 = new Label(" -> ");
 		b1 = new Button("GO!");
-		l2 = new Label("Get it ? Click the button to continue.");	
+		//l2 = new Label("Get it ? Click the button to continue.");	
 		container1 = new VerticalLayout();
 		container2 = new VerticalLayout();
 		b3 = new Button("OK");
 		b4 = new Button("Previous");
 		l3 = new Label();
 		l4 = new Label();
-		l5 = new Label(" -> ");
-		tf3 = new TextField();
-		tf3.setWidth("40px");
+		//l5 = new Label(" -> ");
+		tf3 = new IntegerField();
+		tf3.setWidth("80px");
+		tf3.addStyleName("header1");
+		tf3.setMaxLength(2);
 		tf4 = new TextField();
+		tf4.setWidth("80px");
+		tf4.addStyleName("header1");
 		l5 = new Label("->");
 		s = "";
 		
@@ -120,16 +126,22 @@ public class BlaxBoxExecutor extends VerticalLayout implements
 		HorizontalLayout h4 = new HorizontalLayout();
 		
 		h1.addComponent(tf3);
-		h1.addComponent(l5);
-		h1.addComponent(tf4);
+		h1.setComponentAlignment(tf3, Alignment.MIDDLE_CENTER);
+		//h1.addComponent(l5);
+		//h1.addComponent(tf4);
 		container1.addComponent(h1);
 		container1.addComponent(b1);
 		container1.addComponent(h2);
 		container1.addComponent(ta);
 		
-		h2.addComponent(l2);
-		
+		//h2.addComponent(l2);
+		Label insertPicture = new Label("*insert picture here*");
+		h2.addComponent(insertPicture);
+		h2.addComponent(tf4);
+		h2.setComponentAlignment(insertPicture, Alignment.MIDDLE_CENTER);
+		h2.setComponentAlignment(tf4, Alignment.MIDDLE_CENTER);		
 		h3.addComponent(tf1);
+
 		h3.addComponent(l1);
 		h3.addComponent(tf2);
 		h4.addComponent(b3);
