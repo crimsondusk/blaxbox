@@ -26,6 +26,7 @@ import fi.utu.ville.exercises.model.SubmissionListener;
 import fi.utu.ville.exercises.model.SubmissionType;
 import fi.utu.ville.standardutils.Localizer;
 import fi.utu.ville.standardutils.TempFilesManager;
+import fi.utu.ville.standardutils.ui.DecimalField;
 import fi.utu.ville.standardutils.ui.IntegerField;
 
 public class BlaxBoxExecutor extends VerticalLayout implements
@@ -43,7 +44,7 @@ public class BlaxBoxExecutor extends VerticalLayout implements
 	private final TextField answerField = new TextField();
 	
 	private IntegerField tf3;
-	private TextField tf4;
+	private Label tf4;
 	private Button b1;
     private TextField tf1;
     private TextField tf2;
@@ -144,7 +145,7 @@ public class BlaxBoxExecutor extends VerticalLayout implements
 		tf3.setWidth("80px");
 		tf3.addStyleName("header1");
 		tf3.setMaxLength(2);
-		tf4 = new TextField();
+		tf4 = new Label();
 		tf4.setWidth("120px");
 		tf4.addStyleName("header1");
 		tf5 = new TextField();
