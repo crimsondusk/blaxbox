@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.Random;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Arrays;
+import java.lang.Math;
 
 interface BlaxExprBlock
 {
@@ -51,6 +53,10 @@ public class BlaxExpression
 			new BlaxDivisionOperator(),
 		};
 
+		int minOperandCount = 10000;
+		for (BlaxOperator op : operators)
+			minOperandCount = Math.min (op.getNumOperands(), minOperandCount);
+
 		// Predict the stack size as we fill in the operation. We may not add an operator if stack
 		// count is not at least 2 as we can't use a binary operation on less than 2 values, duh)
 		int stackCount = 0;
@@ -59,11 +65,16 @@ public class BlaxExpression
 		{
 			if (stackCount >= 2 && rng.nextInt (numBlocks - i) < opsLeft)
 			{
-				BlaxOperator op = operators[rng.nextInt (operators.length)];
+				BlaxOperator op;
+
+				do
+					op = operators[rng.nextInt (operators.length)];
+				while (Arrays.asList (profile.operators).contains (op.getSymbol()) == false);
+
 				ops.add (op);
+				System.out.println (op.getSymbol());
 				opsLeft--;
 				stackCount--;
-				System.out.println (op.getSymbol());
 			}
 			else
 			{
@@ -125,6 +136,7 @@ public class BlaxExpression
 	{
 		Random rng = new Random (System.currentTimeMillis() + 50);
 		BlaxExpressionProfile profile = new BlaxExpressionProfile();
+		profile.operators = new String[]{"Addition"};
 		profile.numInputs = 2;
 		profile.minOperators = profile.maxOperators = 5;
 		BlaxExpression expr = new BlaxExpression (profile);
