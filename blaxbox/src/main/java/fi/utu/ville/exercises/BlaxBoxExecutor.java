@@ -130,13 +130,13 @@ public class BlaxBoxExecutor extends VerticalLayout implements
 		//h1.addComponent(l5);
 		//h1.addComponent(tf4);
 		container1.addComponent(h1);
-		container1.addComponent(b1);
 		container1.addComponent(h2);
+		container1.addComponent(b1);
 		container1.addComponent(ta);
 		
 		container1.setComponentAlignment(h1, Alignment.MIDDLE_CENTER);
 		container1.setComponentAlignment(b1, Alignment.MIDDLE_CENTER);
-//		container1.setComponentAlignment(h2, Alignment.MIDDLE_CENTER);
+		container1.setComponentAlignment(h2, Alignment.MIDDLE_CENTER);
 //		container1.setComponentAlignment(ta, Alignment.MIDDLE_CENTER);
 		
 		//h2.addComponent(l2);
