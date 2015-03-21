@@ -80,7 +80,7 @@ public class BlaxBoxExecutor extends VerticalLayout implements
 		p = new HorizontalSplitPanel();
 		tf1 = new TextField();
 		tf2 = new TextField();
-		ta = new TextArea("Results_list");
+		ta = new TextArea("Results list");
 		ta.setHeight(2, Unit.CM);
 		l1 = new Label(" -> ");
 		b1 = new Button("GO!");
