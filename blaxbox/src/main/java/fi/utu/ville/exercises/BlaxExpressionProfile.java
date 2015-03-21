@@ -3,7 +3,7 @@
  */
 class BlaxExpressionProfile
 {
-	public String[] operators = {"+", "-", "*", "/", "mod"};
+	public String[] operators = {"Addition", "Subtraction", "Multiplication", "Division"};
 	public int minOperators = 1;
 	public int maxOperators = 3;
 	public int numInputs = 2;
