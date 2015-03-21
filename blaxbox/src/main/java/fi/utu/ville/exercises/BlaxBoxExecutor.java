@@ -93,6 +93,7 @@ public class BlaxBoxExecutor extends VerticalLayout implements
 		l4 = new Label();
 		l5 = new Label(" -> ");
 		tf3 = new TextField();
+		tf3.setWidth("40px");
 		tf4 = new TextField();
 		l5 = new Label("->");
 		s = "";
