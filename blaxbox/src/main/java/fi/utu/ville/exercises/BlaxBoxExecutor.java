@@ -50,8 +50,9 @@ public class BlaxBoxExecutor extends VerticalLayout implements
     private VerticalLayout container2;
     private HorizontalSplitPanel p;
     private int x;
-    private Random r;
-    private int[] y;
+    private Random r = new Random();
+    private int z = r.nextInt(3);
+    private int[] y = new int[3];
 	public BlaxBoxExecutor() {
 
 		
@@ -89,7 +90,7 @@ public class BlaxBoxExecutor extends VerticalLayout implements
 			y[0]=(x+3);
 			y[1] = 3*x-1;
 			y[2] = (int)Math.pow(x, 2);
-				tf4.setValue(y[0]+"");
+				tf4.setValue(y[z]+"");
 			}
 
 		

@@ -1,3 +1,5 @@
+package fi.utu.ville.exercises;
+
 import java.util.Stack;
 
 public class BlaxNumericOperator extends BlaxBaseNumericOperator
