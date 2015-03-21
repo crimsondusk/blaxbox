@@ -25,6 +25,24 @@ public class BlaxExpression
 	private BlaxExpressionProfile profile;
 	private Random rng;
 	private ArrayList<BlaxOperand> inputs;
+	private ArrayList<BlaxOperator> operators;
+
+	public static BlaxOperator[] allOperators = {
+		new BlaxAdditionOperator(),
+		new BlaxSubtractionOperator(),
+		new BlaxMultiplicationOperator(),
+		new BlaxDivisionOperator(),
+	};
+
+	public static int calcMinOperandCount (ArrayList<BlaxOperator> operators)
+	{
+		int minOperandCount = 10000;
+
+		for (BlaxOperator op : operators)
+			minOperandCount = Math.min (op.getNumOperands(), minOperandCount);
+
+		return minOperandCount;
+	}
 
 	BlaxExpression (BlaxExpressionProfile profile_)
 	{
@@ -35,25 +53,29 @@ public class BlaxExpression
 		int numOps = (profile.maxOperators != profile.minOperators)
 			? rng.nextInt (profile.maxOperators - profile.minOperators) + profile.minOperators
 			: profile.minOperators;
-		int numOperands = numOps + 1; // how many numbers are involved in the operation?
-		int numBlocks = numOps + numOperands; // how many blocks in total?
-		int operandsLeft = numOperands;
-		int inputsLeft = profile.numInputs;
-		int blocksLeft = numBlocks;
-		int opsLeft = numOps;
+		int numOperands = 1; // how many numbers are involved in the operation?
 		ops = new ArrayList<BlaxExprBlock>();
 		inputs = new ArrayList<BlaxOperand>();
+		operators = new ArrayList<BlaxOperator>();
 
-		BlaxOperator[] operators = {
-			new BlaxAdditionOperator(),
-			new BlaxSubtractionOperator(),
-			new BlaxMultiplicationOperator(),
-			new BlaxDivisionOperator(),
-		};
+		// Decide which operators to use
+		for (int i = 0; i < numOps; ++i)
+		{
+			BlaxOperator op;
 
-		int minOperandCount = 10000;
-		for (BlaxOperator op : operators)
-			minOperandCount = Math.min (op.getNumOperands(), minOperandCount);
+			do
+				op = allOperators[rng.nextInt (allOperators.length)];
+			while (Arrays.asList (profile.operators).contains (op.getName()) == false);
+
+			operators.add (op);
+			numOperands += op.getNumOperands() - 1;
+		}
+
+		int minOperandCount = calcMinOperandCount (operators);
+		int operandsLeft = numOperands;
+		int numBlocks = numOps + numOperands; // how many blocks in total?
+		int opsLeft = numOps;
+		int inputsLeft = profile.numInputs;
 
 		// Predict the stack size as we fill in the operation. We may not add an operator if stack
 		// count is not at least 2 as we can't use a binary operation on less than 2 values, duh)
@@ -61,18 +83,21 @@ public class BlaxExpression
 
 		for (int i = 0; i < numBlocks; ++i)
 		{
-			if (stackCount >= 2 && rng.nextInt (numBlocks - i) < opsLeft)
+			if (stackCount >= minOperandCount && rng.nextInt (numBlocks - i) < opsLeft)
 			{
 				BlaxOperator op;
 
 				do
-					op = operators[rng.nextInt (operators.length)];
-				while (Arrays.asList (profile.operators).contains (op.getSymbol()) == false);
+					op = operators.get (rng.nextInt (operators.size()));
+				while (op.getNumOperands() - 1 >= stackCount);
 
 				ops.add (op);
-				System.out.println (op.getSymbol());
+				System.out.println ("" + i + ". " + op.getSymbol());
 				opsLeft--;
-				stackCount--;
+				stackCount -= (op.getNumOperands() - 1);
+
+				// minOperandCount may change now, update it
+				minOperandCount = calcMinOperandCount (operators);
 			}
 			else
 			{
@@ -85,10 +110,10 @@ public class BlaxExpression
 					operand.setInputNumber (profile.numInputs - inputsLeft);
 					inputs.add (operand);
 					inputsLeft--;
-					System.out.println ("[" + operand.getInputNumber() + "]");
+					System.out.println ("" + i + ". [" + operand.getInputNumber() + "]");
 				}
 				else
-					System.out.println (strval);
+					System.out.println ("" + i + ". " + strval);
 
 				ops.add (operand);
 				stackCount++;
