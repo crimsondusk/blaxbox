@@ -1,5 +1,3 @@
-package fi.utu.ville.exercises;
-
 import java.util.Stack;
 
 /*
@@ -8,7 +6,7 @@ import java.util.Stack;
 public class BlaxOperand implements BlaxExprBlock
 {
 	private String m_value;
-	private boolean m_isConstant = false;
+	private int m_inputNumber = -1;
 
 	@Override
 	public boolean doOperation (Stack<String> values)
@@ -22,19 +20,23 @@ public class BlaxOperand implements BlaxExprBlock
 		return m_value;
 	}
 
-	public boolean isConstant()
+	public void setInputNumber (int a)
 	{
-		return m_isConstant;
+		m_inputNumber = a;
 	}
 
-	public void setValue (String value, boolean isConstant)
+	public int getInputNumber()
+	{
+		return m_inputNumber;
+	}
+
+	public void setValue (String value)
 	{
 		m_value = value;
-		m_isConstant = isConstant;
 	}
 
-	BlaxOperand (String value, boolean isConstant)
+	BlaxOperand (String value)
 	{
-		setValue (value, isConstant);
+		setValue (value);
 	}
 };

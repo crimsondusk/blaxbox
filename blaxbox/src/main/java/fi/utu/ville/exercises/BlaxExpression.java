@@ -1,8 +1,8 @@
-package fi.utu.ville.exercises;
-
 import java.util.Stack;
 import java.util.ArrayList;
 import java.util.Random;
+import java.util.Collections;
+import java.util.Comparator;
 
 interface BlaxExprBlock
 {
@@ -11,9 +11,9 @@ interface BlaxExprBlock
 
 interface BlaxOperator extends BlaxExprBlock
 {
-	int numOperands(); // how many operands does the operator require? (typically 2)
-	String toString(); // how to represent the operator?
-	String name(); // name of this operator
+	int getNumOperands(); // how many operands does the operator require? (typically 2)
+	String getSymbol(); // how to represent the operator?
+	String getName(); // name of this operator
 };
 
 public class BlaxExpression
@@ -22,13 +22,7 @@ public class BlaxExpression
 	private Stack<String> values;
 	private BlaxExpressionProfile profile;
 	private Random rng;
-
-	static ArrayList<BlaxOperator> allOperators;
-
-	static public void AddOperator (BlaxOperator op)
-	{
-		allOperators.add (op);
-	}
+	private ArrayList<BlaxOperand> inputs;
 
 	BlaxExpression (BlaxExpressionProfile profile_)
 	{
@@ -36,13 +30,24 @@ public class BlaxExpression
 
 		// decide some values
 		rng = new Random (System.currentTimeMillis());
-		int numOps = rng.nextInt (profile.maxOperators - profile.minOperators) + profile.minOperators;
+		int numOps = (profile.maxOperators != profile.minOperators)
+			? rng.nextInt (profile.maxOperators - profile.minOperators) + profile.minOperators
+			: profile.minOperators;
 		int numOperands = numOps + 1; // how many numbers are involved in the operation?
 		int numBlocks = numOps + numOperands; // how many blocks in total?
 		int operandsLeft = numOperands;
+		int inputsLeft = profile.numInputs;
 		int blocksLeft = numBlocks;
 		int opsLeft = numOps;
 		ops = new ArrayList<BlaxExprBlock>();
+		inputs = new ArrayList<BlaxOperand>();
+
+		BlaxOperator[] operators = {
+			new BlaxAdditionOperator(),
+			new BlaxSubtractionOperator(),
+			new BlaxMultiplicationOperator(),
+			new BlaxDivisionOperator(),
+		};
 
 		// Predict the stack size as we fill in the operation. We may not add an operator if stack
 		// count is not at least 2 as we can't use a binary operation on less than 2 values, duh)
@@ -52,20 +57,45 @@ public class BlaxExpression
 		{
 			if (stackCount >= 2 && rng.nextInt (numBlocks - i) < opsLeft)
 			{
-				BlaxOperator op = new BlaxNumericOperator (BlaxNumericOperator.OperatorType.values()[rng.nextInt (4)]);
+				BlaxOperator op = operators[rng.nextInt (operators.length)];
 				ops.add (op);
 				opsLeft--;
 				stackCount--;
-				System.out.println (op.toString());
+				System.out.println (op.getSymbol());
 			}
 			else
 			{
-				String strval = Integer.toString (rng.nextInt (21));
-				ops.add (new BlaxOperand (strval, true));
-				System.out.println (strval);
+				String strval = Integer.toString (rng.nextInt (20) + 1);
+				BlaxOperand operand = new BlaxOperand (strval);
+
+				// With some odds, this number becomes an input number
+				if (rng.nextInt (operandsLeft) < inputsLeft)
+				{
+					operand.setInputNumber (profile.numInputs - inputsLeft);
+					inputs.add (operand);
+					inputsLeft--;
+					System.out.println ("[" + operand.getInputNumber() + "]");
+				}
+				else
+					System.out.println (strval);
+
+				ops.add (operand);
 				stackCount++;
+				operandsLeft--;
 			}
 		}
+
+		while (inputs.size() < profile.numInputs)
+		{
+			BlaxOperand op = new BlaxOperand("");
+			op.setInputNumber (inputs.size());
+			inputs.add (op);
+		}
+	}
+
+	void setInput (int inputId, String value)
+	{
+		inputs.get (inputId).setValue (value);
 	}
 
 	public String evaluate()
@@ -83,9 +113,29 @@ public class BlaxExpression
 		return values.pop();
 	}
 
+	public void printInputs()
+	{
+		for (BlaxOperand input : inputs)
+			System.out.println ("" + input.getInputNumber() + ". (" + input.getValue() + ")");
+	}
+
 	public static void main (String[] args)
 	{
-		BlaxExpression expr = new BlaxExpression (new BlaxExpressionProfile());
-		System.out.println ("= " + expr.evaluate());
+		Random rng = new Random (System.currentTimeMillis() + 50);
+		BlaxExpressionProfile profile = new BlaxExpressionProfile();
+		profile.numInputs = 2;
+		profile.minOperators = profile.maxOperators = 5;
+		BlaxExpression expr = new BlaxExpression (profile);
+
+		for (int i = 0; i < 3; ++i)
+		{
+			System.out.println ("Iteration " + i);
+			for (int inputId = 0; inputId < profile.numInputs; ++inputId)
+				expr.setInput (inputId, Integer.toString (rng.nextInt (20) + 1));
+
+			System.out.println ("Inputs:");
+			expr.printInputs();
+			System.out.println ("-> " + expr.evaluate());
+		}
 	}
 };
