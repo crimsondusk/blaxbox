@@ -45,13 +45,14 @@ public class BlaxBoxExecutor extends VerticalLayout implements
 	}
 
 	private void doLayout(BlaxBoxExerciseData exerciseData, String oldAnswer) {
-		if (exerciseData.getImgFile() != null) {
-			this.addComponent(new Image(null, exerciseData.getImgFile()
-					.getAsResource()));
-		}
 		this.addComponent(new Label(exerciseData.getQuestion()));
 		answerField.setValue(oldAnswer);
 		this.addComponent(answerField);
+		this.addComponent(new Label("adding allowed: " + Boolean.toString(exerciseData.getAddAllowed())));
+		this.addComponent(new Label("subtracting allowed: " + Boolean.toString(exerciseData.getSubAllowed())));
+		this.addComponent(new Label("multiplicating allowed: " + Boolean.toString(exerciseData.getMultiAllowed())));
+		this.addComponent(new Label("division allowed: " + Boolean.toString(exerciseData.getDivAllowed())));
+		
 	}
 
 	@Override
