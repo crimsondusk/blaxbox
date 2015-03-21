@@ -2,14 +2,15 @@ package fi.utu.ville.exercises;
 
 import java.util.Random;
 
-import com.vaadin.ui.Alignment;
+import com.vaadin.server.ClassResource;
+import com.vaadin.server.ThemeResource;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.HorizontalSplitPanel;
+import com.vaadin.ui.Image;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.Layout;
-import com.vaadin.ui.Notification;
 import com.vaadin.ui.TextArea;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
@@ -24,7 +25,6 @@ import fi.utu.ville.exercises.model.SubmissionListener;
 import fi.utu.ville.exercises.model.SubmissionType;
 import fi.utu.ville.standardutils.Localizer;
 import fi.utu.ville.standardutils.TempFilesManager;
-import fi.utu.ville.standardutils.ui.IntegerField;
 
 public class BlaxBoxExecutor extends VerticalLayout implements
 		Executor<BlaxBoxExerciseData, BlaxBoxSubmissionInfo> {
@@ -40,7 +40,7 @@ public class BlaxBoxExecutor extends VerticalLayout implements
 
 	private final TextField answerField = new TextField();
 	
-	private IntegerField tf3;
+	private TextField tf3;
 	private TextField tf4;
 	private Button b1;
     private TextField tf1;
@@ -48,8 +48,10 @@ public class BlaxBoxExecutor extends VerticalLayout implements
     private Label l1;
     private Label l2;
     private Button b3;
-    private Button b4;
+    private Button b2;
     private Label l3;
+    private HorizontalLayout h1;
+    private HorizontalLayout h2;
     private Label l4;
     private Label l5;
     private TextArea ta;
@@ -61,6 +63,43 @@ public class BlaxBoxExecutor extends VerticalLayout implements
     private int z = r.nextInt(3);
     private int[] y = new int[3];
     private String s;
+    private TextField tf5;
+    private TextField tf6;
+    private TextField tf7;
+    private TextField tf8;
+    private Label l6;
+    private Label l7;
+    private HorizontalLayout h5;
+    private int z1 = r.nextInt(21);
+    private int z2 = r.nextInt(21);
+    private int z3 = r.nextInt(21);
+    private ThemeResource image1;
+    private ThemeResource image2;
+    private Image correct1;
+    private Image correct2;
+    private Image correct3;
+    private Image incorrect1;
+    private Image incorrect2;
+    private Image incorrect3;
+    private HorizontalLayout h3;
+    private HorizontalLayout h4;
+    
+    public static int function(int type, int x)
+    {
+    	int y=0;
+    
+    	switch(type)
+    	{
+    	case 0: y = 3*x-1; break;
+    	case 1: y = (int) Math.pow(x, 2); break;
+    	case 2: y = x+4; break;
+    	case 3: y = (x-3)*3; break;
+    	default: break;
+    	}
+    	return y;
+    }
+
+    
     
 	public BlaxBoxExecutor() {
 
@@ -81,72 +120,138 @@ public class BlaxBoxExecutor extends VerticalLayout implements
 		answerField.setValue(oldAnswer);
 		p = new HorizontalSplitPanel();
 		tf1 = new TextField();
+		tf1.setValue(z1+"");
 		tf2 = new TextField();
-		ta = new TextArea("Results list");
+		ta = new TextArea("Results_list");
+		
 		ta.setHeight(2, Unit.CM);
 		l1 = new Label(" -> ");
+		l1.setWidth(5,Unit.MM);
 		b1 = new Button("GO!");
-		//l2 = new Label("Get it ? Click the button to continue.");	
+		l2 = new Label("Get it ? Click the button to continue.");	
 		container1 = new VerticalLayout();
 		container2 = new VerticalLayout();
 		b3 = new Button("OK");
-		b4 = new Button("Previous");
 		l3 = new Label();
 		l4 = new Label();
-		//l5 = new Label(" -> ");
-		tf3 = new IntegerField();
-		tf3.setWidth("80px");
-		tf3.addStyleName("header1");
-		tf3.setMaxLength(2);
+		l5 = new Label(" -> ");
+		l5.setWidth(5,Unit.MM);
+		tf3 = new TextField();
 		tf4 = new TextField();
-		tf4.setWidth("80px");
-		tf4.addStyleName("header1");
-		l5 = new Label("->");
-		s = "";
+		tf5 = new TextField();
+		tf5.setValue(z2+"");
+		tf6 = new TextField();
+		tf7 = new TextField();
+		tf7.setValue(z3+"");
+		tf8 = new TextField();
+		l6 = new Label(" -> ");
+		l6.setWidth(5,Unit.MM);
+		l7 = new Label(" -> ");
+		l7.setWidth(5,Unit.MM);
+
 		
+		s = "";
+		image1 = new ThemeResource("correct.jpg");
+		image2 = new ThemeResource("incorrect.png");
+		correct1 = new Image(null,image1);
+		correct1.setWidth(5,Unit.MM);
+		correct1.setHeight(5,Unit.MM);
+		
+		correct2 = new Image(null,image1);
+		correct2.setWidth(5,Unit.MM);
+		correct2.setHeight(5,Unit.MM);
+		
+		correct3 = new Image(null,image1);
+		correct3.setWidth(5,Unit.MM);
+		correct3.setHeight(5,Unit.MM);
+		
+		incorrect1 = new Image(null,image2);
+		incorrect1.setWidth(5,Unit.MM);
+		incorrect1.setWidth(5,Unit.MM);
+		
+		incorrect2 = new Image(null,image2);
+		incorrect2.setWidth(5,Unit.MM);
+		incorrect2.setWidth(5,Unit.MM);
+		
+		incorrect3 = new Image(null,image2);
+		incorrect3.setWidth(5,Unit.MM);
+		incorrect3.setWidth(5,Unit.MM);
+		
+		 h1 = new HorizontalLayout();
+	 h2 = new HorizontalLayout();
+		h3= new HorizontalLayout();
+		h4= new HorizontalLayout();
+		h5= new HorizontalLayout();
 		b1.addClickListener(new Button.ClickListener()
 		{@Override 
 			public void buttonClick(ClickEvent event) {
 			x = Integer.parseInt(tf3.getValue());
-			y[0]=(x+3);
-			y[1] = 3*x-1;
-			y[2] = (int)Math.pow(x, 2);
-			String s2 = y[z]+"";
+			
+			String s2 = function(z, x)+"";
 				tf4.setValue(s2);
-				s= s+x+"->"+s2+"\n";
+				s= s+x+" -> "+s2+"\n";
 				ta.setValue(s);
 			}
 
 		
 		});
 			
-		HorizontalLayout h1 = new HorizontalLayout();
-		HorizontalLayout h2 = new HorizontalLayout();
-		HorizontalLayout h3 = new HorizontalLayout();
-		HorizontalLayout h4 = new HorizontalLayout();
+		b3.addClickListener(new Button.ClickListener()
+		{@Override 
+			public void buttonClick(ClickEvent event) {
+			if(tf2.getValue().equals(function(z,Integer.parseInt(tf1.getValue()))+""))
+			{
+				h3.addComponent(correct1);
+			}
+			else
+			{
+				h3.addComponent(incorrect1);
+			}
+			
+			if(tf6.getValue().equals(function(z,Integer.parseInt(tf5.getValue()))+""))
+			{
+				h4.addComponent(correct2);
+			}
+			else
+			{
+				h4.addComponent(incorrect2);
+			}
+			
+			if(tf8.getValue().equals(function(z,Integer.parseInt(tf7.getValue()))+""))
+			{
+				h5.addComponent(correct3);
+			}
+			else
+			{
+				h5.addComponent(incorrect3);
+			}
+		}});
+		
 		
 		h1.addComponent(tf3);
-		h1.setComponentAlignment(tf3, Alignment.MIDDLE_CENTER);
-		//h1.addComponent(l5);
-		//h1.addComponent(tf4);
+		h1.addComponent(l5);
+		h1.addComponent(tf4);
 		container1.addComponent(h1);
 		container1.addComponent(b1);
 		container1.addComponent(h2);
 		container1.addComponent(ta);
 		
-		//h2.addComponent(l2);
-		Label insertPicture = new Label("*insert picture here*");
-		h2.addComponent(insertPicture);
-		h2.addComponent(tf4);
-		h2.setComponentAlignment(insertPicture, Alignment.MIDDLE_CENTER);
-		h2.setComponentAlignment(tf4, Alignment.MIDDLE_CENTER);		
+		h2.addComponent(l2);
+		
 		h3.addComponent(tf1);
-
 		h3.addComponent(l1);
 		h3.addComponent(tf2);
-		h4.addComponent(b3);
+		h4.addComponent(tf5);
+		h4.addComponent(l6);
+		h4.addComponent(tf6);
+		h5.addComponent(tf7);
+		h5.addComponent(l7);
+		h5.addComponent(tf8);
+		
 		container2.addComponent(h3);
 		container2.addComponent(h4);
+		container2.addComponent(h5);
+		container2.addComponent(b3);
 
 		p.setFirstComponent(container1);
 		p.setSecondComponent(container2);
@@ -181,10 +286,38 @@ public class BlaxBoxExecutor extends VerticalLayout implements
 
 	@Override
 	public void askSubmit(SubmissionType submType) {
-		double corr = 1.0;
+		double corr = 0;
 
-		String answer = answerField.getValue();
-		execHelper.informOnlySubmit(corr, new BlaxBoxSubmissionInfo(answer),
+		if(tf2.getValue().equals(function(z,Integer.parseInt(tf1.getValue()))+""))
+		{
+			h3.addComponent(correct1);
+			corr+=0.5;
+		}
+		else
+		{
+			h3.addComponent(incorrect1);
+		}
+		
+		if(tf6.getValue().equals(function(z,Integer.parseInt(tf5.getValue()))+""))
+		{
+			h4.addComponent(correct2);
+			corr+=0.5;
+		}
+		else
+		{
+			h4.addComponent(incorrect2);
+		}
+		
+		if(tf8.getValue().equals(function(z,Integer.parseInt(tf7.getValue()))+""))
+		{
+			h5.addComponent(correct3);
+			corr+=0.5;
+		}
+		else
+		{
+			h5.addComponent(incorrect3);
+		}
+		execHelper.informOnlySubmit(corr, null,
 				submType, null);
 
 	}

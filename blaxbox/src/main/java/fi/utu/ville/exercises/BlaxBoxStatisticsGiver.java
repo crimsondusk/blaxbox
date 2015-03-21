@@ -47,13 +47,13 @@ public class BlaxBoxStatisticsGiver implements
 			answers.add(data.get(i).getSubmissionData().getAnswer());
 		}
 		
-		StatisticsInfoColumn<String> answersCol = new StatisticsInfoColumn<String>(
-				localizer.getUIText(BlaxBoxUiConstants.ANSWER),
-				localizer.getUIText(BlaxBoxUiConstants.ANSWER_COL_DESC,
-						exer.getQuestion()), String.class, answers, true);
+//		StatisticsInfoColumn<String> answersCol = new StatisticsInfoColumn<String>(
+//				localizer.getUIText(BlaxBoxUiConstants.ANSWER),
+//				localizer.getUIText(BlaxBoxUiConstants.ANSWER_COL_DESC,
+//						exer.getQuestion()), String.class, answers, true);
 		
-		statCols = Collections
-				.<StatisticsInfoColumn<?>> singletonList(answersCol);
+//		statCols = Collections
+//				.<StatisticsInfoColumn<?>> singletonList(answersCol);
 	}
 	
 	@Override

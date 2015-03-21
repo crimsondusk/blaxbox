@@ -27,8 +27,18 @@ to { opacity 1; }
 	.header1 {
 		font-size: 48px !important;
 		font-weight: bold;
+		border: 0 !important;
+		border-bottom: 5px solid #222 !important;
+		border-radius: 5px !important;
+		box-shadow: 0 !important;
+		background: none !important;
+		text-align: center !important;
+		
 	}
 
+	.header1:focus {
+		border-bottom: 5px solid #5ca0df !important;		
+	}
 	
 img {
 

@@ -35,8 +35,8 @@ public class BlaxBoxSubmissionViewer extends VerticalLayout implements
 	}
 
 	private void doLayout() {
-		this.addComponent(new Label(localizer.getUIText(BlaxBoxUiConstants.QUESTION) + 
-				": " + exer.getQuestion()));
+//		this.addComponent(new Label(localizer.getUIText(BlaxBoxUiConstants.QUESTION) + 
+//				": " + exer.getQuestion()));
 		Label answ = new Label(localizer.getUIText(BlaxBoxUiConstants.ANSWER) + 
 				": "  + submInfo.getAnswer());
 		answ.addStyleName(BlaxBoxThemeConsts.ANSWER_STYLE);
@@ -50,8 +50,9 @@ public class BlaxBoxSubmissionViewer extends VerticalLayout implements
 
 	@Override
 	public String exportSubmissionDataAsText() {
-		return localizer.getUIText(BlaxBoxUiConstants.QUESTION, "\n", 
-				exer.getQuestion(), submInfo.getAnswer());
+	//		return localizer.getUIText(BlaxBoxUiConstants.QUESTION, "\n", 
+	//				exer.getQuestion(), submInfo.getAnswer());
+		return "";
 		
 	}
 
