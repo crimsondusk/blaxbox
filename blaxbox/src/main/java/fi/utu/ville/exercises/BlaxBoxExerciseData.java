@@ -10,7 +10,7 @@ public class BlaxBoxExerciseData implements ExerciseData {
 	 */
 	private static final long serialVersionUID = -716445297446246493L;
 
-	private final String question;
+	private final int amount;
 	private final boolean addallowed;
 	private final boolean subtractionallowed;
 	private final boolean multiplicationallowed;
@@ -25,16 +25,16 @@ public class BlaxBoxExerciseData implements ExerciseData {
 
 	*/
 
-	public BlaxBoxExerciseData(String question, boolean addallowed, boolean subtractionallowed, boolean multiplicationallowed, boolean divisionallowed) {
-		this.question = question;
+	public BlaxBoxExerciseData(int amount, boolean addallowed, boolean subtractionallowed, boolean multiplicationallowed, boolean divisionallowed) {
+		this.amount = amount;
 		this.addallowed = addallowed;
 		this.subtractionallowed = subtractionallowed;
 		this.multiplicationallowed = multiplicationallowed;
 		this.divisionallowed = divisionallowed;
 	}
 	
-	public String getQuestion() {
-		return question;
+	public int getAmount() {
+		return amount;
 	}
 	
 	public boolean getAddAllowed() {

@@ -65,7 +65,7 @@ public class BlaxBoxExecutor extends VerticalLayout implements
 	}
 
 	private void doLayout(BlaxBoxExerciseData exerciseData, String oldAnswer) {
-		this.addComponent(new Label(exerciseData.getQuestion()));
+		this.addComponent(new Label(exerciseData.getAmount() + ""));
 		answerField.setValue(oldAnswer);
 		this.addComponent(answerField);
 		this.addComponent(new Label("adding allowed: " + Boolean.toString(exerciseData.getAddAllowed())));
@@ -75,7 +75,7 @@ public class BlaxBoxExecutor extends VerticalLayout implements
 		p = new HorizontalSplitPanel();
 		tf1 = new TextField();
 		tf2 = new TextField();
-		l1 = new Label("->");
+		l1 = new Label(" -> ");
 		b1 = new Button("GO!");
 		l2 = new Label("Get it ? Click the button to continue.");	
 		b2 = new Button("Next");
@@ -85,7 +85,7 @@ public class BlaxBoxExecutor extends VerticalLayout implements
 		b4 = new Button("Previous");
 		l3 = new Label();
 		l4 = new Label();
-		l5 = new Label("->");
+		l5 = new Label(" -> ");
 		
 		b1.addClickListener(new Button.ClickListener()
 		{@Override 
@@ -96,7 +96,7 @@ public class BlaxBoxExecutor extends VerticalLayout implements
 		
 		});
 			
-		this.addComponent(new Label(exerciseData.getQuestion()));
+		this.addComponent(new Label(exerciseData.getAmount() + ""));
 		HorizontalLayout h1 = new HorizontalLayout();
 		HorizontalLayout h2 = new HorizontalLayout();
 		HorizontalLayout h3 = new HorizontalLayout();
