@@ -5,7 +5,7 @@ package fi.utu.ville.exercises;
  */
 class BlaxExpressionProfile
 {
-	public StringList operators = {"+", "-", "*", "/", "mod"};
+	public String[] operators = {"+", "-", "*", "/", "mod"};
 	public int minOperators = 1;
 	public int maxOperators = 3;
 	public int numInputs = 2;
