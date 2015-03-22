@@ -87,6 +87,14 @@ public class BlaxBoxExecutor extends VerticalLayout implements
 	private HorizontalLayout[] answerLayouts;
 	private Image[] correctImages;
 	private Image[] incorrectImages;
+	
+	private float rightAnswers = 0;
+	private float answers = 0;
+	private float successRate = 0;
+	
+	private float numberOfGos = 0;
+	private float numberOfGosRate = 0;
+	
 private BlaxBoxExerciseData exerciseData;
 	public BlaxBoxExecutor() {
 
@@ -179,6 +187,9 @@ private BlaxBoxExerciseData exerciseData;
 		}
 
 		
+		Label successPercentLabel = new Label("Success rate: " + Float.toString(successRate) + "%");
+		Label successPerRun = new Label("Right answers per runs: " + Float.toString(numberOfGosRate));
+		
 		// Generate a problem
 		BlaxExpressionProfile profile = new BlaxExpressionProfile();
 		profile.numInputs = 1;
@@ -263,6 +274,9 @@ private BlaxBoxExerciseData exerciseData;
 		container2.addComponent(h5);
 		container2.addComponent(b3);
 
+//		container2.addComponent(successPercentLabel);
+//		container2.addComponent(successPerRun);
+		
 		p.setFirstComponent(container1);
 		p.setSecondComponent(container2);
 		addComponent(p);
