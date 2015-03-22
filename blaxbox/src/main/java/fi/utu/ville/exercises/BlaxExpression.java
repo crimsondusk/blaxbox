@@ -27,6 +27,7 @@ public class BlaxExpression
 	private Random rng;
 	private ArrayList<BlaxOperand> inputs;
 	private ArrayList<BlaxOperator> operators;
+	private int numInputsUsed = 0;
 
 	public static BlaxOperator[] allOperators = {
 		new BlaxAdditionOperator(),
@@ -58,6 +59,7 @@ public class BlaxExpression
 		ops = new ArrayList<BlaxExprBlock>();
 		inputs = new ArrayList<BlaxOperand>();
 		operators = new ArrayList<BlaxOperator>();
+		numInputsUsed = 0;
 
 		// Decide which operators to use
 		for (int i = 0; i < numOps; ++i)
@@ -111,6 +113,7 @@ public class BlaxExpression
 					operand.setInputNumber (profile.numInputs - inputsLeft);
 					inputs.add (operand);
 					inputsLeft--;
+					numInputsUsed++;
 					System.out.println ("" + i + ". [" + operand.getInputNumber() + "]");
 				}
 				else
@@ -137,6 +140,17 @@ public class BlaxExpression
 
 	public String evaluate()
 	{
+		// If the inputs are valid, they will be parsed properly here. If not, stop now.
+		try
+		{
+			for (int i = 0; i < numInputsUsed; ++i)
+				Double.parseDouble (inputs.get (i).getValue());
+		}
+		catch (NumberFormatException e)
+		{
+			return "";
+		}
+
 		values = new Stack<String>();
 
 		for (BlaxExprBlock block : ops)
