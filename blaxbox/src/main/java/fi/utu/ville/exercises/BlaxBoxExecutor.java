@@ -1,10 +1,9 @@
 package fi.utu.ville.exercises;
 
-import java.util.Random;
+import java.text.NumberFormat;
 import java.util.ArrayList;
-import java.lang.Math;
+import java.util.Random;
 
-import com.vaadin.server.ClassResource;
 import com.vaadin.server.ThemeResource;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
@@ -28,7 +27,6 @@ import fi.utu.ville.exercises.model.SubmissionListener;
 import fi.utu.ville.exercises.model.SubmissionType;
 import fi.utu.ville.standardutils.Localizer;
 import fi.utu.ville.standardutils.TempFilesManager;
-import fi.utu.ville.standardutils.ui.DecimalField;
 import fi.utu.ville.standardutils.ui.IntegerField;
 
 public class BlaxBoxExecutor extends VerticalLayout implements
@@ -90,13 +88,14 @@ public class BlaxBoxExecutor extends VerticalLayout implements
     private BlaxExpression problem;
 	private Image imageKone;
 	private Image imageRatas;
+	
     
     private TextField[] inputFields;
 	private TextField[] outputFields;
 	private HorizontalLayout[] answerLayouts;
 	private Image[] corrects;
 	private Image[] incorrects;
-
+private BlaxBoxExerciseData exerciseData;
 	public BlaxBoxExecutor() {
 
 		
@@ -108,6 +107,7 @@ public class BlaxBoxExecutor extends VerticalLayout implements
 			BlaxBoxExerciseData exerciseData, BlaxBoxSubmissionInfo oldSubm,
 			TempFilesManager materials, ExecutionSettings fbSettings)
 			throws ExerciseException {
+		this.exerciseData = exerciseData;
 		answerField.setCaption(localizer.getUIText(BlaxBoxUiConstants.ANSWER));
 		doLayout(exerciseData, oldSubm != null ? oldSubm.getAnswer() : "");
 	}
@@ -133,7 +133,7 @@ public class BlaxBoxExecutor extends VerticalLayout implements
 		return false;
 	}
 
-	private void doLayout(BlaxBoxExerciseData exerciseData, String oldAnswer) {
+	public void doLayout(BlaxBoxExerciseData exerciseData, String oldAnswer) {
 		answerField.setValue(oldAnswer);
 		p = new HorizontalSplitPanel();
 		tf1 = new TextField();
@@ -314,6 +314,9 @@ public class BlaxBoxExecutor extends VerticalLayout implements
 	@Override
 	public void askReset() {
 		// nothing to do here
+		this.removeAllComponents();
+		doLayout(exerciseData, "");
+		
 	}
 
 	@Override
@@ -331,8 +334,9 @@ public class BlaxBoxExecutor extends VerticalLayout implements
 			if (checkUserAnswer (i))
 				corr += 1.0;
 		}
-
-		execHelper.informOnlySubmit (corr / 3, null, submType, null);
+		
+		
+		execHelper.informOnlySubmit (corr/3, null, submType, null);
 	}
 
 	@Override
