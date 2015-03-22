@@ -50,7 +50,7 @@ public class BlaxBoxExecutor extends VerticalLayout implements
     private TextField tf2;
     private Label l1;
     private Label l2;
-    private Button b3;
+//    private Button b3;
     private Button b2;
     private Label l3;
     private HorizontalLayout h1;
@@ -167,7 +167,7 @@ private BlaxBoxExerciseData exerciseData;
 		//l2 = new Label("Get it ? Click the button to continue.");	
 		container1 = new VerticalLayout();
 		container2 = new VerticalLayout();
-		b3 = new Button("OK");
+//		b3 = new Button("OK");
 		l3 = new Label();
 		l4 = new Label();
 		//l5 = new Label(" -> ");
@@ -254,14 +254,14 @@ private BlaxBoxExerciseData exerciseData;
 			}
 		});
 			
-		b3.addClickListener(new Button.ClickListener()
-		{@Override 
-			public void buttonClick(ClickEvent event)
-			{
-				for (int i = 0; i < 3; ++i)
-					checkUserAnswer (i);
-			}
-		});
+//		b3.addClickListener(new Button.ClickListener()
+//		{@Override 
+//			public void buttonClick(ClickEvent event)
+//			{
+//				for (int i = 0; i < 3; ++i)
+//					checkUserAnswer (i);
+//			}
+//		});
 		
 		
 		h2.addComponent(tf3);
@@ -299,7 +299,7 @@ private BlaxBoxExerciseData exerciseData;
 		container2.addComponent(h3);
 		container2.addComponent(h4);
 		container2.addComponent(h5);
-		container2.addComponent(b3);
+//		container2.addComponent(b3);
 
 //		container2.addComponent(successPercentLabel);
 //		container2.addComponent(successPerRun);
