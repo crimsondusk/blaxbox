@@ -218,7 +218,7 @@ public class BlaxBoxExecutor extends VerticalLayout implements
 
 		problem = new BlaxExpression (profile);
 
-		ThemeResource resourceKone = new ThemeResource("kone.png");
+		ThemeResource resourceKone = new ThemeResource("kone.gif");
 		imageKone = new Image(null, resourceKone);		
 		ThemeResource resourceRatas = new ThemeResource("ratas.png");
 		imageRatas = new Image(null, resourceRatas);				
