@@ -1,10 +1,9 @@
 package fi.utu.ville.exercises;
 
-import java.util.Random;
+import java.text.NumberFormat;
 import java.util.ArrayList;
-import java.lang.Math;
+import java.util.Random;
 
-import com.vaadin.server.ClassResource;
 import com.vaadin.server.ThemeResource;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
@@ -28,7 +27,6 @@ import fi.utu.ville.exercises.model.SubmissionListener;
 import fi.utu.ville.exercises.model.SubmissionType;
 import fi.utu.ville.standardutils.Localizer;
 import fi.utu.ville.standardutils.TempFilesManager;
-import fi.utu.ville.standardutils.ui.DecimalField;
 import fi.utu.ville.standardutils.ui.IntegerField;
 
 public class BlaxBoxExecutor extends VerticalLayout implements
@@ -90,6 +88,7 @@ public class BlaxBoxExecutor extends VerticalLayout implements
     private BlaxExpression problem;
 	private Image imageKone;
 	private Image imageRatas;
+	
     
     private TextField[] inputFields;
 	private TextField[] outputFields;
@@ -104,6 +103,8 @@ public class BlaxBoxExecutor extends VerticalLayout implements
 	private float numberOfGos = 0;
 	private float numberOfGosRate = 0;
 	
+
+private BlaxBoxExerciseData exerciseData;
 	public BlaxBoxExecutor() {
 
 		
@@ -115,6 +116,7 @@ public class BlaxBoxExecutor extends VerticalLayout implements
 			BlaxBoxExerciseData exerciseData, BlaxBoxSubmissionInfo oldSubm,
 			TempFilesManager materials, ExecutionSettings fbSettings)
 			throws ExerciseException {
+		this.exerciseData = exerciseData;
 		answerField.setCaption(localizer.getUIText(BlaxBoxUiConstants.ANSWER));
 		doLayout(exerciseData, oldSubm != null ? oldSubm.getAnswer() : "");
 	}
@@ -140,7 +142,7 @@ public class BlaxBoxExecutor extends VerticalLayout implements
 		return false;
 	}
 
-	private void doLayout(BlaxBoxExerciseData exerciseData, String oldAnswer) {
+	public void doLayout(BlaxBoxExerciseData exerciseData, String oldAnswer) {
 		answerField.setValue(oldAnswer);
 		p = new HorizontalSplitPanel();
 		tf1 = new TextField();
@@ -218,13 +220,13 @@ public class BlaxBoxExecutor extends VerticalLayout implements
 
 		problem = new BlaxExpression (profile);
 
-		ThemeResource resourceKone = new ThemeResource("kone.gif");
+		ThemeResource resourceKone = new ThemeResource("kone.png");
 		imageKone = new Image(null, resourceKone);		
 		ThemeResource resourceRatas = new ThemeResource("ratas.png");
 		imageRatas = new Image(null, resourceRatas);				
 		
 		 h1 = new HorizontalLayout();
-		 h2 = new HorizontalLayout();
+	 h2 = new HorizontalLayout();
 		h3= new HorizontalLayout();
 		h4= new HorizontalLayout();
 		h5= new HorizontalLayout();
@@ -232,14 +234,10 @@ public class BlaxBoxExecutor extends VerticalLayout implements
 		{@Override 
 			public void buttonClick(ClickEvent event)
 			{
-				numberOfGos += 1;
 				String x = tf3.getValue();
 				problem.setInput (0, x);
+
 				String resultString = problem.evaluate();
-
-				if (resultString.isEmpty())
-					return;
-
 				tf4.setValue (resultString);
 				resultListString += (x + " -> " + resultString + "\n");
 				ta.setValue (resultListString);
@@ -287,7 +285,6 @@ public class BlaxBoxExecutor extends VerticalLayout implements
 		h5.addComponent(tf7);
 		h5.addComponent(l7);
 		h5.addComponent(tf8);
-
 		
 		container2.addComponent(h3);
 		container2.addComponent(h4);
@@ -306,7 +303,6 @@ public class BlaxBoxExecutor extends VerticalLayout implements
 		answerLayouts = new HorizontalLayout[] {h3, h4, h5};
 		corrects = new Image[] {correct1, correct2, correct3};
 		incorrects = new Image[] {incorrect1, incorrect2, incorrect3};
-
 
 		container1.setMargin(true);
 		container1.setSpacing(true);
@@ -333,6 +329,9 @@ public class BlaxBoxExecutor extends VerticalLayout implements
 	@Override
 	public void askReset() {
 		// nothing to do here
+		this.removeAllComponents();
+		doLayout(exerciseData, "");
+		
 	}
 
 	@Override
@@ -347,17 +346,12 @@ public class BlaxBoxExecutor extends VerticalLayout implements
 
 		for (int i = 0; i < 3; ++i)
 		{
-			if (checkUserAnswer (i)) {
+			if (checkUserAnswer (i))
 				corr += 1.0;
-				rightAnswers += 1;
-			}
-			answers += 1;
 		}
 		
-		successRate = rightAnswers/answers;
-		numberOfGosRate = numberOfGos/rightAnswers;
 		
-		execHelper.informOnlySubmit (corr / 3, null, submType, null);
+		execHelper.informOnlySubmit (corr/3, null, submType, null);
 	}
 
 	@Override
