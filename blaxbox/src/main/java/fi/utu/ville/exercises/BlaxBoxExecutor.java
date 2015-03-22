@@ -284,14 +284,16 @@ public class BlaxBoxExecutor extends VerticalLayout implements
 		h5.addComponent(tf7);
 		h5.addComponent(l7);
 		h5.addComponent(tf8);
-//		h5.addComponent(successPercentLabel);
-//		h5.addComponent(successPerRun);
+
 		
 		container2.addComponent(h3);
 		container2.addComponent(h4);
 		container2.addComponent(h5);
 		container2.addComponent(b3);
 
+		container2.addComponent(successPercentLabel);
+		container2.addComponent(successPerRun);
+		
 		p.setFirstComponent(container1);
 		p.setSecondComponent(container2);
 		addComponent(p);
