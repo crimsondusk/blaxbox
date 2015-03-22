@@ -40,7 +40,7 @@ public class BlaxBoxEditor extends VilleContent implements
 	
 	private AbstractEditorLayout layout;
 	
-	private CheckBox checkboxadd = new CheckBox("adding");
+	private CheckBox checkboxadd = new CheckBox("adding", true);
 	
 	private CheckBox checkboxsubtract = new CheckBox("subtracting");
 	

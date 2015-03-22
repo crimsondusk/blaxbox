@@ -96,7 +96,14 @@ public class BlaxBoxExecutor extends VerticalLayout implements
 	private HorizontalLayout[] answerLayouts;
 	private Image[] corrects;
 	private Image[] incorrects;
-
+	
+	private float rightAnswers = 0;
+	private float answers = 0;
+	private float successRate = 0;
+	
+	private float numberOfGos = 0;
+	private float numberOfGosRate = 0;
+	
 	public BlaxBoxExecutor() {
 
 		
@@ -195,6 +202,9 @@ public class BlaxBoxExecutor extends VerticalLayout implements
 		incorrect3.setWidth(5,Unit.MM);
 		incorrect3.setWidth(5,Unit.MM);
 		
+		Label successPercentLabel = new Label("Success rate: " + Float.toString(successRate) + "%");
+		Label successPerRun = new Label("Right answers per runs: " + Float.toString(numberOfGosRate));
+		
 		// Generate a problem
 		BlaxExpressionProfile profile = new BlaxExpressionProfile();
 		profile.numInputs = 1;
@@ -214,7 +224,7 @@ public class BlaxBoxExecutor extends VerticalLayout implements
 		imageRatas = new Image(null, resourceRatas);				
 		
 		 h1 = new HorizontalLayout();
-	 h2 = new HorizontalLayout();
+		 h2 = new HorizontalLayout();
 		h3= new HorizontalLayout();
 		h4= new HorizontalLayout();
 		h5= new HorizontalLayout();
@@ -222,6 +232,7 @@ public class BlaxBoxExecutor extends VerticalLayout implements
 		{@Override 
 			public void buttonClick(ClickEvent event)
 			{
+				numberOfGos += 1;
 				String x = tf3.getValue();
 				problem.setInput (0, x);
 
@@ -273,6 +284,8 @@ public class BlaxBoxExecutor extends VerticalLayout implements
 		h5.addComponent(tf7);
 		h5.addComponent(l7);
 		h5.addComponent(tf8);
+//		h5.addComponent(successPercentLabel);
+//		h5.addComponent(successPerRun);
 		
 		container2.addComponent(h3);
 		container2.addComponent(h4);
@@ -288,6 +301,7 @@ public class BlaxBoxExecutor extends VerticalLayout implements
 		answerLayouts = new HorizontalLayout[] {h3, h4, h5};
 		corrects = new Image[] {correct1, correct2, correct3};
 		incorrects = new Image[] {incorrect1, incorrect2, incorrect3};
+
 
 		container1.setMargin(true);
 		container1.setSpacing(true);
@@ -328,10 +342,16 @@ public class BlaxBoxExecutor extends VerticalLayout implements
 
 		for (int i = 0; i < 3; ++i)
 		{
-			if (checkUserAnswer (i))
+			if (checkUserAnswer (i)) {
 				corr += 1.0;
+				rightAnswers += 1;
+			}
+			answers += 1;
 		}
-
+		
+		successRate = rightAnswers/answers;
+		numberOfGosRate = numberOfGos/rightAnswers;
+		
 		execHelper.informOnlySubmit (corr / 3, null, submType, null);
 	}
 
