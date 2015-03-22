@@ -46,7 +46,7 @@ public class BlaxBoxExecutor extends VerticalLayout implements
 	private IntegerField tf3;
 	private Label tf4;
 	private Button b1;
-    private TextField tf1;
+    private Label questionLabel1;
     private TextField tf2;
     private Label l1;
     private Label l2;
@@ -65,9 +65,9 @@ public class BlaxBoxExecutor extends VerticalLayout implements
     private Random r = new Random();
     private int[] y = new int[3];
     private String resultListString;
-    private TextField tf5;
+    private Label questionLabel2;
     private TextField tf6;
-    private TextField tf7;
+    private Label questionLabel3;
     private TextField tf8;
     private Label l6;
     private Label l7;
@@ -82,7 +82,7 @@ public class BlaxBoxExecutor extends VerticalLayout implements
 	private Image imageRatas;
 	
     
-    private TextField[] inputFields;
+    private Label[] inputFields;
 	private TextField[] outputFields;
 	private HorizontalLayout[] answerLayouts;
 	private Image[] correctImages;
@@ -112,32 +112,51 @@ private BlaxBoxExerciseData exerciseData;
 		doLayout(exerciseData, oldSubm != null ? oldSubm.getAnswer() : "");
 	}
 
+	private boolean isAnswerCorrect (String answerString, String correctAnswerString)
+	{
+		double answer, correctAnswer;
+
+		try
+		{
+			answer = Double.parseDouble (answerString);
+			correctAnswer = Double.parseDouble (correctAnswerString); // *should* succeed
+		}
+		catch (NumberFormatException e)
+		{
+			// failed to parse the number to double
+			return false;
+		}
+
+		return (Math.abs (answer - correctAnswer) < 0.01);
+	}
+
 	private boolean checkUserAnswer (int i)
 	{
 		if (i < 0 || i >= 3)
 			return false;
 
 		problem.setInput (0, inputFields[i].getValue());
-		double correctAnswer = Double.parseDouble (problem.evaluate());
-		double answer = Double.parseDouble (outputFields[i].getValue());
+		boolean r = isAnswerCorrect (outputFields[i].getValue(), problem.evaluate());
 
-		if (Math.abs (answer - correctAnswer) < 0.01)
+		if (r)
 		{
 			answerLayouts[i].removeComponent (incorrectImages[i]);
 			answerLayouts[i].addComponent (correctImages[i]);
-			return true;
+		}
+		else
+		{
+			answerLayouts[i].removeComponent (correctImages[i]);
+			answerLayouts[i].addComponent (incorrectImages[i]);
 		}
 
-		answerLayouts[i].removeComponent (correctImages[i]);
-		answerLayouts[i].addComponent (incorrectImages[i]);
-		return false;
+		return r;
 	}
 
 	public void doLayout(BlaxBoxExerciseData exerciseData, String oldAnswer) {
 		answerField.setValue(oldAnswer);
 		p = new HorizontalSplitPanel();
-		tf1 = new TextField();
-		tf1.setValue(z1+"");
+		questionLabel1 = new Label();
+		questionLabel1.setValue(z1+"");
 		tf2 = new TextField();
 		ta = new TextArea("Results list");
 		ta.setHeight(null);
@@ -159,11 +178,11 @@ private BlaxBoxExerciseData exerciseData;
 		tf4 = new Label();
 		tf4.setWidth("120px");
 		tf4.addStyleName("header1");
-		tf5 = new TextField();
-		tf5.setValue(z2+"");
+		questionLabel2 = new Label();
+		questionLabel2.setValue(z2+"");
 		tf6 = new TextField();
-		tf7 = new TextField();
-		tf7.setValue(z3+"");
+		questionLabel3 = new Label();
+		questionLabel3.setValue(z3+"");
 		tf8 = new TextField();
 		l6 = new Label(" -> ");
 		l7 = new Label(" -> ");
@@ -267,13 +286,13 @@ private BlaxBoxExerciseData exerciseData;
 		h2.setComponentAlignment(imageKone, Alignment.MIDDLE_CENTER);
 		h2.setComponentAlignment(tf4, Alignment.BOTTOM_CENTER);	
 
-		h3.addComponent(tf1);
+		h3.addComponent(questionLabel1);
 		h3.addComponent(l1);
 		h3.addComponent(tf2);
-		h4.addComponent(tf5);
+		h4.addComponent(questionLabel2);
 		h4.addComponent(l6);
 		h4.addComponent(tf6);
-		h5.addComponent(tf7);
+		h5.addComponent(questionLabel3);
 		h5.addComponent(l7);
 		h5.addComponent(tf8);
 		
@@ -289,7 +308,7 @@ private BlaxBoxExerciseData exerciseData;
 		p.setSecondComponent(container2);
 		addComponent(p);
 
-		inputFields = new TextField[] {tf1, tf5, tf7};
+		inputFields = new Label[] {questionLabel1, questionLabel2, questionLabel3};
 		outputFields = new TextField[] {tf2, tf6, tf8};
 		answerLayouts = new HorizontalLayout[] {h3, h4, h5};
 
