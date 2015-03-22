@@ -112,25 +112,44 @@ private BlaxBoxExerciseData exerciseData;
 		doLayout(exerciseData, oldSubm != null ? oldSubm.getAnswer() : "");
 	}
 
+	private boolean isAnswerCorrect (String answerString, String correctAnswerString)
+	{
+		double answer, correctAnswer;
+
+		try
+		{
+			answer = Double.parseDouble (answerString);
+			correctAnswer = Double.parseDouble (correctAnswerString); // *should* succeed
+		}
+		catch (NumberFormatException e)
+		{
+			// failed to parse the number to double
+			return false;
+		}
+
+		return (Math.abs (answer - correctAnswer) < 0.01);
+	}
+
 	private boolean checkUserAnswer (int i)
 	{
 		if (i < 0 || i >= 3)
 			return false;
 
 		problem.setInput (0, inputFields[i].getValue());
-		double correctAnswer = Double.parseDouble (problem.evaluate());
-		double answer = Double.parseDouble (outputFields[i].getValue());
+		boolean r = isAnswerCorrect (outputFields[i].getValue(), problem.evaluate());
 
-		if (Math.abs (answer - correctAnswer) < 0.01)
+		if (r)
 		{
 			answerLayouts[i].removeComponent (incorrectImages[i]);
 			answerLayouts[i].addComponent (correctImages[i]);
-			return true;
+		}
+		else
+		{
+			answerLayouts[i].removeComponent (correctImages[i]);
+			answerLayouts[i].addComponent (incorrectImages[i]);
 		}
 
-		answerLayouts[i].removeComponent (correctImages[i]);
-		answerLayouts[i].addComponent (incorrectImages[i]);
-		return false;
+		return r;
 	}
 
 	public void doLayout(BlaxBoxExerciseData exerciseData, String oldAnswer) {
