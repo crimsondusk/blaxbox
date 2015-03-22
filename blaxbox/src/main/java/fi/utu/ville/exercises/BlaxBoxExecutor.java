@@ -72,9 +72,9 @@ public class BlaxBoxExecutor extends VerticalLayout implements
     private Label l6;
     private Label l7;
     private HorizontalLayout h5;
-    private int z1 = r.nextInt(21);
-    private int z2 = r.nextInt(21);
-    private int z3 = r.nextInt(21);
+    private int z1;
+    private int z2;
+    private int z3;
     private HorizontalLayout h3;
     private HorizontalLayout h4;
     private BlaxExpression problem;
@@ -153,6 +153,16 @@ private BlaxBoxExerciseData exerciseData;
 	}
 
 	public void doLayout(BlaxBoxExerciseData exerciseData, String oldAnswer) {
+		z1 = r.nextInt(21);
+
+		do
+			z2 = r.nextInt(21);
+		while (z2 == z1);
+
+		do
+			z3 = r.nextInt(21);
+		while (z3 == z1 || z3 == z2);
+
 		answerField.setValue(oldAnswer);
 		p = new HorizontalSplitPanel();
 		questionLabel1 = new Label();
