@@ -121,7 +121,7 @@ private BlaxBoxExerciseData exerciseData;
 		double correctAnswer = Double.parseDouble (problem.evaluate());
 		double answer = Double.parseDouble (outputFields[i].getValue());
 
-		if (Math.abs (answer - correctAnswer) < 0.01)
+		if ( Math.abs (answer - correctAnswer) < 0.01)
 		{
 			answerLayouts[i].removeComponent (incorrects[i]);
 			answerLayouts[i].addComponent (corrects[i]);
