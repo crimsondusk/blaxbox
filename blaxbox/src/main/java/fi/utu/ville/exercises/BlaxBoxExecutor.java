@@ -1,6 +1,5 @@
 package fi.utu.ville.exercises;
 
-import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -13,6 +12,7 @@ import com.vaadin.ui.HorizontalSplitPanel;
 import com.vaadin.ui.Image;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.Layout;
+import com.vaadin.ui.Notification;
 import com.vaadin.ui.TextArea;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
@@ -75,14 +75,6 @@ public class BlaxBoxExecutor extends VerticalLayout implements
     private int z1 = r.nextInt(21);
     private int z2 = r.nextInt(21);
     private int z3 = r.nextInt(21);
-    private ThemeResource image1;
-    private ThemeResource image2;
-    private Image correct1;
-    private Image correct2;
-    private Image correct3;
-    private Image incorrect1;
-    private Image incorrect2;
-    private Image incorrect3;
     private HorizontalLayout h3;
     private HorizontalLayout h4;
     private BlaxExpression problem;
@@ -93,8 +85,16 @@ public class BlaxBoxExecutor extends VerticalLayout implements
     private TextField[] inputFields;
 	private TextField[] outputFields;
 	private HorizontalLayout[] answerLayouts;
-	private Image[] corrects;
-	private Image[] incorrects;
+	private Image[] correctImages;
+	private Image[] incorrectImages;
+	
+	private float rightAnswers = 0;
+	private float answers = 0;
+	private float successRate = 0;
+	
+	private float numberOfGos = 0;
+	private float numberOfGosRate = 0;
+	
 private BlaxBoxExerciseData exerciseData;
 	public BlaxBoxExecutor() {
 
@@ -121,15 +121,15 @@ private BlaxBoxExerciseData exerciseData;
 		double correctAnswer = Double.parseDouble (problem.evaluate());
 		double answer = Double.parseDouble (outputFields[i].getValue());
 
-		if ( Math.abs (answer - correctAnswer) < 0.01)
+		if (Math.abs (answer - correctAnswer) < 0.01)
 		{
-			answerLayouts[i].removeComponent (incorrects[i]);
-			answerLayouts[i].addComponent (corrects[i]);
+			answerLayouts[i].removeComponent (incorrectImages[i]);
+			answerLayouts[i].addComponent (correctImages[i]);
 			return true;
 		}
 
-		answerLayouts[i].removeComponent (corrects[i]);
-		answerLayouts[i].addComponent (incorrects[i]);
+		answerLayouts[i].removeComponent (correctImages[i]);
+		answerLayouts[i].addComponent (incorrectImages[i]);
 		return false;
 	}
 
@@ -169,31 +169,26 @@ private BlaxBoxExerciseData exerciseData;
 		l7 = new Label(" -> ");
 		l5 = new Label(" -> ");
 		resultListString = "";
-		image1 = new ThemeResource("correct.jpg");
-		image2 = new ThemeResource("incorrect.png");
-		correct1 = new Image(null,image1);
-		correct1.setWidth(5,Unit.MM);
-		correct1.setHeight(5,Unit.MM);
+
+		ThemeResource correctResource = new ThemeResource("correct.jpg");
+		ThemeResource incorrectResource = new ThemeResource("incorrect.png");
+		correctImages = new Image[3];
+		incorrectImages = new Image[3];
+
+		for (int i = 0; i < 3; ++i)
+		{
+			correctImages[i] = new Image (null, correctResource);
+			correctImages[i].setWidth (5, Unit.MM);
+			correctImages[i].setHeight (5, Unit.MM);
+ 
+			incorrectImages[i] = new Image (null, incorrectResource);
+			incorrectImages[i].setWidth (5, Unit.MM);
+			incorrectImages[i].setWidth (5, Unit.MM);
+		}
+
 		
-		correct2 = new Image(null,image1);
-		correct2.setWidth(5,Unit.MM);
-		correct2.setHeight(5,Unit.MM);
-		
-		correct3 = new Image(null,image1);
-		correct3.setWidth(5,Unit.MM);
-		correct3.setHeight(5,Unit.MM);
-		
-		incorrect1 = new Image(null,image2);
-		incorrect1.setWidth(5,Unit.MM);
-		incorrect1.setWidth(5,Unit.MM);
-		
-		incorrect2 = new Image(null,image2);
-		incorrect2.setWidth(5,Unit.MM);
-		incorrect2.setWidth(5,Unit.MM);
-		
-		incorrect3 = new Image(null,image2);
-		incorrect3.setWidth(5,Unit.MM);
-		incorrect3.setWidth(5,Unit.MM);
+		Label successPercentLabel = new Label("Success rate: " + Float.toString(successRate) + "%");
+		Label successPerRun = new Label("Right answers per runs: " + Float.toString(numberOfGosRate));
 		
 		// Generate a problem
 		BlaxExpressionProfile profile = new BlaxExpressionProfile();
@@ -208,7 +203,7 @@ private BlaxBoxExerciseData exerciseData;
 
 		problem = new BlaxExpression (profile);
 
-		ThemeResource resourceKone = new ThemeResource("kone.png");
+		ThemeResource resourceKone = new ThemeResource("kone.gif");
 		imageKone = new Image(null, resourceKone);		
 		ThemeResource resourceRatas = new ThemeResource("ratas.png");
 		imageRatas = new Image(null, resourceRatas);				
@@ -223,12 +218,20 @@ private BlaxBoxExerciseData exerciseData;
 			public void buttonClick(ClickEvent event)
 			{
 				String x = tf3.getValue();
+				Integer x1 = Integer.parseInt(x);
+				if(x1==z1||x1==z2||x1==z3)
+				{
+					Notification.show("Invalid input !");
+				}
+				else
+				{
 				problem.setInput (0, x);
 
 				String resultString = problem.evaluate();
 				tf4.setValue (resultString);
 				resultListString += (x + " -> " + resultString + "\n");
 				ta.setValue (resultListString);
+				}
 			}
 		});
 			
@@ -279,6 +282,9 @@ private BlaxBoxExerciseData exerciseData;
 		container2.addComponent(h5);
 		container2.addComponent(b3);
 
+//		container2.addComponent(successPercentLabel);
+//		container2.addComponent(successPerRun);
+		
 		p.setFirstComponent(container1);
 		p.setSecondComponent(container2);
 		addComponent(p);
@@ -286,8 +292,6 @@ private BlaxBoxExerciseData exerciseData;
 		inputFields = new TextField[] {tf1, tf5, tf7};
 		outputFields = new TextField[] {tf2, tf6, tf8};
 		answerLayouts = new HorizontalLayout[] {h3, h4, h5};
-		corrects = new Image[] {correct1, correct2, correct3};
-		incorrects = new Image[] {incorrect1, incorrect2, incorrect3};
 
 		container1.setMargin(true);
 		container1.setSpacing(true);
