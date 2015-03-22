@@ -2,7 +2,6 @@ package fi.utu.ville.exercises;
 
 import java.util.Random;
 
-import com.vaadin.server.ClassResource;
 import com.vaadin.server.ThemeResource;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
@@ -12,6 +11,7 @@ import com.vaadin.ui.HorizontalSplitPanel;
 import com.vaadin.ui.Image;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.Layout;
+import com.vaadin.ui.Panel;
 import com.vaadin.ui.TextArea;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
@@ -42,6 +42,7 @@ public class BlaxBoxExecutor extends VerticalLayout implements
 
 	private final TextField answerField = new TextField();
 	
+	private String hint;
 	private IntegerField tf3;
 	private TextField tf4;
 	private Button b1;
@@ -62,7 +63,7 @@ public class BlaxBoxExecutor extends VerticalLayout implements
     private HorizontalSplitPanel p;
     private int x;
     private Random r = new Random();
-    private int z = r.nextInt(3);
+    private int z = r.nextInt(4);
     private int[] y = new int[3];
     private String s;
     private TextField tf5;
@@ -85,6 +86,10 @@ public class BlaxBoxExecutor extends VerticalLayout implements
     private Image incorrect3;
     private HorizontalLayout h3;
     private HorizontalLayout h4;
+    private HorizontalLayout hh1;
+    private HorizontalLayout hh2;
+    private HorizontalLayout hh3;
+    
     
     public static int function(int type, int x)
     {
@@ -119,7 +124,6 @@ public class BlaxBoxExecutor extends VerticalLayout implements
 	}
 
 	private void doLayout(BlaxBoxExerciseData exerciseData, String oldAnswer) {
-		answerField.setValue(oldAnswer);
 		p = new HorizontalSplitPanel();
 		tf1 = new TextField();
 		tf1.setValue(z1+"");
@@ -151,7 +155,12 @@ public class BlaxBoxExecutor extends VerticalLayout implements
 		l6 = new Label(" -> ");
 		l7 = new Label(" -> ");
 		l5 = new Label(" -> ");
+		
 		s = "";
+		
+		hint = "Function is a way to express the relationship between the input and output of this game. For example:\n\t1 -> 4\n\t"
+				+ "\n\t2 -> 7\n\t3->?\nIn the above example, we see that the output equals 3 times the input plus 1. So the answer should be 10. Assuming the input is x and the output is y, we have:\n"
+				+ "\"y = 3x + 1\"\nThe function for this question is: "; 
 		image1 = new ThemeResource("correct.jpg");
 		image2 = new ThemeResource("incorrect.png");
 		correct1 = new Image(null,image1);
@@ -197,36 +206,7 @@ public class BlaxBoxExecutor extends VerticalLayout implements
 		
 		});
 			
-		b3.addClickListener(new Button.ClickListener()
-		{@Override 
-			public void buttonClick(ClickEvent event) {
-			if(tf2.getValue().equals(function(z,Integer.parseInt(tf1.getValue()))+""))
-			{
-				h3.addComponent(correct1);
-			}
-			else
-			{
-				h3.addComponent(incorrect1);
-			}
-			
-			if(tf6.getValue().equals(function(z,Integer.parseInt(tf5.getValue()))+""))
-			{
-				h4.addComponent(correct2);
-			}
-			else
-			{
-				h4.addComponent(incorrect2);
-			}
-			
-			if(tf8.getValue().equals(function(z,Integer.parseInt(tf7.getValue()))+""))
-			{
-				h5.addComponent(correct3);
-			}
-			else
-			{
-				h5.addComponent(incorrect3);
-			}
-		}});
+		
 		
 		
 		h2.addComponent(tf3);
@@ -251,15 +231,22 @@ public class BlaxBoxExecutor extends VerticalLayout implements
 		h2.setComponentAlignment(insertPicture, Alignment.MIDDLE_CENTER);
 		h2.setComponentAlignment(tf4, Alignment.MIDDLE_CENTER);	
 
+		hh1 =new HorizontalLayout();
+		hh2 =new HorizontalLayout();
+		hh3 = new HorizontalLayout();
 		h3.addComponent(tf1);
 		h3.addComponent(l1);
 		h3.addComponent(tf2);
+		h3.addComponent(hh1);
 		h4.addComponent(tf5);
 		h4.addComponent(l6);
 		h4.addComponent(tf6);
+		h4.addComponent(hh2);
+		
 		h5.addComponent(tf7);
 		h5.addComponent(l7);
 		h5.addComponent(tf8);
+		h5.addComponent(hh3);
 		
 		container2.addComponent(h3);
 		container2.addComponent(h4);
@@ -303,32 +290,38 @@ public class BlaxBoxExecutor extends VerticalLayout implements
 
 		if(tf2.getValue().equals(function(z,Integer.parseInt(tf1.getValue()))+""))
 		{
-			h3.addComponent(correct1);
+			hh1.removeAllComponents();
+			hh1.addComponent(correct1);
 			corr+=1;
 		}
 		else
 		{
-			h3.addComponent(incorrect1);
+			hh1.removeAllComponents();
+			hh1.addComponent(incorrect1);
 		}
 		
 		if(tf6.getValue().equals(function(z,Integer.parseInt(tf5.getValue()))+""))
 		{
-			h4.addComponent(correct2);
+			hh2.removeAllComponents();
+			hh2.addComponent(correct2);
 			corr+=1;
 		}
 		else
 		{
-			h4.addComponent(incorrect2);
+			hh2.removeAllComponents();
+			hh2.addComponent(incorrect2);
 		}
 		
 		if(tf8.getValue().equals(function(z,Integer.parseInt(tf7.getValue()))+""))
 		{
-			h5.addComponent(correct3);
+			hh3.removeAllComponents();
+			hh3.addComponent(correct3);
 			corr+=1;
 		}
 		else
 		{
-			h5.addComponent(incorrect3);
+			hh3.removeAllComponents();
+			hh3.addComponent(incorrect3);
 		}
 		execHelper.informOnlySubmit(corr/3, null,
 				submType, null);
