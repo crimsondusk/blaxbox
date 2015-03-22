@@ -224,8 +224,11 @@ public class BlaxBoxExecutor extends VerticalLayout implements
 			{
 				String x = tf3.getValue();
 				problem.setInput (0, x);
-
 				String resultString = problem.evaluate();
+
+				if (resultString.isEmpty())
+					return;
+
 				tf4.setValue (resultString);
 				resultListString += (x + " -> " + resultString + "\n");
 				ta.setValue (resultListString);
